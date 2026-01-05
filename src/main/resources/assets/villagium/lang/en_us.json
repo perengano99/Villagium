@@ -1,0 +1,13 @@
+{
+  "itemGroup.villagium": "Example Mod Tab",
+  "block.villagium.example_block": "Example Block",
+  "item.villagium.example_item": "Example Item",
+
+  "villagium.configuration.title": "Villagium Nova Vita Configs",
+  "villagium.configuration.section.villagium.common.toml": "Villagium Nova Vita Configs",
+  "villagium.configuration.section.villagium.common.toml.title": "Villagium Nova Vita Configs",
+  "villagium.configuration.items": "Item List",
+  "villagium.configuration.logDirtBlock": "Log Dirt Block",
+  "villagium.configuration.magicNumberIntroduction": "Magic Number Text",
+  "villagium.configuration.magicNumber": "Magic Number"
+}
