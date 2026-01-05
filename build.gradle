@@ -33,8 +33,6 @@ neoForge {
     version = project.neo_version
 
     parchment {
-        mappingsVersion = project.parchment_mappings_version
-        minecraftVersion = project.parchment_minecraft_version
     }
 
     // This line is optional. Access Transformers are automatically detected
@@ -181,5 +179,12 @@ idea {
     module {
         downloadSources = true
         downloadJavadoc = true
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
