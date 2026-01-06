@@ -30,12 +30,6 @@ sourceSets {
         java.srcDirs = ['src/main/java']
         resources.srcDirs = ['src/main/resources', 'src/generated/resources']
     }
-    client {
-        java.srcDirs = ['src/client/java']
-        resources.srcDirs = ['src/client/resources']
-        compileClasspath += sourceSets.main.output + configurations.compileClasspath
-        runtimeClasspath += sourceSets.main.output + configurations.runtimeClasspath
-    }
 }
 
 neoForge {
@@ -104,7 +98,6 @@ neoForge {
         // multi mod projects should define one per mod
         "${mod_id}" {
             sourceSet sourceSets.main
-            sourceSet sourceSets.client
         }
     }
 
@@ -192,10 +185,6 @@ idea {
     module {
         downloadSources = true
         downloadJavadoc = true
-        sourceDirs += file('src/client/java')
-        resourceDirs += file('src/client/resources')
-        scopes.COMPILE.plus += [ configurations.compileClasspath ]
-        scopes.RUNTIME.plus += [ configurations.runtimeClasspath ]
     }
 }
 
