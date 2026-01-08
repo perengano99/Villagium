@@ -3,18 +3,14 @@ package com.perengano99.villagium.client.renderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.perengano99.villagium.client.model.Box;
-import com.perengano99.villagium.client.model.BreastModel;
-import com.perengano99.villagium.client.model.BreastModelPhyisics;
+import com.perengano99.villagium.client.model.parts.BreastModel;
+import com.perengano99.villagium.client.renderer.state.BreastPhysicsState;
+import com.perengano99.villagium.client.renderer.state.BreastPhysicsState.Side;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.block.Blocks;
 import org.joml.*;
 import org.jspecify.annotations.NonNull;
 
@@ -22,9 +18,7 @@ import java.lang.Math;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BreastsRenderer {
-	
-	public enum Side { LEFT, RIGHT }
+public class BreastModelRenderer {
 	
 	public record BreastBox(int texU, int texV, float x, int dx, int dy, float delta, boolean mirror) {}
 	
@@ -46,43 +40,38 @@ public class BreastsRenderer {
 	
 	private boolean breathingAnimation;
 	
-	public <S extends HumanoidRenderState> void build(BreastModel.Settings settings, float delta, LivingEntity entity) {
-		offsetX = settings.getOffsetX();
-		offsetY = settings.getOffsetY();
-		offsetZ = settings.getOffsetZ();
-		
-		BreastModelPhyisics lPhysics = settings.getLeftPhysics();
-		BreastModelPhyisics rPhysics = settings.getRightPhysics();
-		
-		final float bSize = settings.getSize();
-		outwardAngle = settings.getOutward();
+	public <S extends HumanoidRenderState> void build(BreastPhysicsState physicsState, float offsetX, float offsetY, float offsetZ, float size, float outwardAngle,
+	                                                  boolean breathingAnimation, float partialTicks) {
+		this.offsetX      = offsetX;
+		this.offsetY      = offsetY;
+		this.offsetZ      = offsetZ;
+		this.outwardAngle = outwardAngle;
 		
 		// Left
-		lPhysPositionY      = lPhysics.getPositionY(delta);
-		lPhysPositionX      = lPhysics.getPositionX(delta);
-		lPhysBounceRotation = lPhysics.getBounceRotation(delta);
+		lPhysPositionY      = physicsState.getPositionY(Side.LEFT, partialTicks);
+		lPhysPositionX      = physicsState.getPositionX(Side.LEFT, partialTicks);
+		lPhysBounceRotation = physicsState.getBounceRotation(Side.LEFT, partialTicks);
 		
 		// Right
-		rPhysPositionY      = rPhysics.getPositionY(delta);
-		rPhysPositionX      = rPhysics.getPositionX(delta);
-		rPhysBounceRotation = rPhysics.getBounceRotation(delta);
+		rPhysPositionY      = physicsState.getPositionY(Side.RIGHT, partialTicks);
+		rPhysPositionX      = physicsState.getPositionX(Side.RIGHT, partialTicks);
+		rPhysBounceRotation = physicsState.getBounceRotation(Side.RIGHT, partialTicks);
 		
-		if (bSize > 0.7f) size = bSize;
-		else size = Math.min(bSize * 1.5f, 0.7f);
+		if (size > 0.7f) this.size = size;
+		else this.size = Math.min(size * 1.5f, 0.7f);
 		
-		zOffset = 0.0625f - (bSize * 0.0625f);
-		size *= 0.5f * Math.abs(bSize - 0.7f) * 2;
+		this.zOffset = 0.0625f - (size * 0.0625f);
+		this.size *= 0.5f * Math.abs(size - 0.7f) * 2;
 		
-		breathingAnimation = (!entity.isUnderWater() || entity.hasEffect(MobEffects.WATER_BREATHING) || entity.level().getBlockState(
-				new BlockPos(entity.getBlockX(), entity.getBlockY(), entity.getBlockZ())).is(Blocks.BUBBLE_COLUMN));
+		this.breathingAnimation = breathingAnimation;
 	}
 	
 	public <S extends HumanoidRenderState> void submitBreast(BreastModel model, S state, ModelPart body, PoseStack poseStack, Side side, SubmitNodeCollector submitNodeCollector,
-	                                                         RenderType renderType, int light) {
+	                                                         RenderType renderType, int overlay, int light) {
 		poseStack.pushPose();
 		setupTransforms(state, body, poseStack, side);
 		submitNodeCollector.submitCustomGeometry(poseStack, renderType, (pose, consumer) -> {
-			renderBox(model, side, pose, consumer, light, OverlayTexture.NO_OVERLAY, 0xFFFFFF);
+			renderBox(model, side, pose, consumer, light, overlay, 0xFFFFFF);
 		});
 		poseStack.popPose();
 	}

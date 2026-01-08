@@ -1,7 +1,7 @@
-package com.perengano99.villagium.client.model;
+package com.perengano99.villagium.client.model.parts;
 
+import com.perengano99.villagium.client.model.Box;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.LivingEntity;
 
 public class BreastModel extends Box {
 	
@@ -29,63 +29,5 @@ public class BreastModel extends Box {
 		//		Estas caras no se ven ya que estan dentro del cuerpo.
 		this.quads[3] = new TexturedQuad(texU + 4, texV + 4 + 4, texU + 4 + dx, texV + 1 + 4 + dy, tW, tH - 1, mirror, Direction.UP, vertex1, vertex2, vertex6, vertex5);
 		this.quads[4] = new TexturedQuad(texU + 4, texV + 4, texU + 4 + dx, texV + 4 + dy, tW, tH, mirror, Direction.NORTH, vertex, vertex7, vertex2, vertex1);
-	}
-	
-	public static class Settings {
-		private float chestSize = .6f, chestOffsetX, chestOffsetY, chestOffsetZ, chestOutward;
-		
-		private final BreastModelPhyisics lPhy, rPhy;
-		
-		public Settings(LivingEntity entity) {
-			lPhy = new BreastModelPhyisics(this, entity);
-			rPhy = new BreastModelPhyisics(this, entity);
-		}
-		
-		public BreastModelPhyisics getLeftPhysics() {
-			return lPhy;
-		}
-		
-		public BreastModelPhyisics getRightPhysics() {
-			return rPhy;
-		}
-		
-		public float getSize() {
-			return chestSize;
-		}
-		
-		public void setSize(float chestSize) {
-			this.chestSize = chestSize;
-		}
-		
-		public void setOffsets(float chestOffsetX, float chestOffsetY, float chestOffsetZ) {
-			this.chestOffsetX = chestOffsetX;
-			this.chestOffsetY = chestOffsetY;
-			this.chestOffsetZ = chestOffsetZ;
-		}
-		
-		public void setOutward(float chestOutward){
-			this.chestOutward = chestOutward;
-		}
-		
-		public float getOffsetX() {
-			return chestOffsetX;
-		}
-		
-		public float getOffsetY() {
-			return chestOffsetY;
-		}
-		
-		public float getOffsetZ() {
-			return chestOffsetZ;
-		}
-		
-		public float getOutward() {
-			return chestOutward;
-		}
-		
-		public void tick() {
-			lPhy.update();
-			rPhy.update();
-		}
 	}
 }

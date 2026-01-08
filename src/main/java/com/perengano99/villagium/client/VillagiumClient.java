@@ -2,6 +2,7 @@ package com.perengano99.villagium.client;
 
 import com.perengano99.villagium.Villagium;
 import com.perengano99.villagium.client.model.NvVillagerModel;
+import com.perengano99.villagium.client.physics.BreastPhysicsManager;
 import com.perengano99.villagium.client.renderer.entity.NvVillagerRenderer;
 import com.perengano99.villagium.core.registration.ModEntityTypes;
 import com.perengano99.villagium.core.util.logging.Logger;
@@ -11,7 +12,6 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;

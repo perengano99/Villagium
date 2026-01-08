@@ -23,6 +23,4 @@ public class NvVillagerRenderer extends VillagiumRenderer <NvVillager, NvVillage
 	public @NonNull Identifier getTextureLocation(NvVillagerRenderState nvVillagerRenderState) {
 		return Identifier.fromNamespaceAndPath(Villagium.MODID, "textures/entity/nv_villager/female/body.png");
 	}
-	
-	
 }

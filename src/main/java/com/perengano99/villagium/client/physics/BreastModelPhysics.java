@@ -1,6 +1,5 @@
-package com.perengano99.villagium.client.model;
+package com.perengano99.villagium.client.physics;
 
-import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -18,7 +17,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Random;
 
-public class BreastModelPhyisics {
+public class BreastModelPhysics {
 	
 	//X-Axis
 	private float bounceVelX = 0, targetBounceX = 0, velocityX = 0, positionX, prePositionX;
@@ -37,30 +36,25 @@ public class BreastModelPhyisics {
 	private double lastVerticalMoveVelocity;
 	private boolean alreadyFalling = false;
 	
-	private final LivingEntity host;
-	private final BreastModel.Settings settings;
 	private final Random random = new Random();
 	
-	public BreastModelPhyisics(BreastModel.Settings settings, LivingEntity entity) {
-		host          = entity;
-		this.settings = settings;
+	public BreastModelPhysics() {
 	}
 	
 	private static boolean vehicleSuppressesRotation(Entity vehicle) {
 		return (vehicle instanceof Chicken || vehicle instanceof AbstractHorse horseLike && !horseLike.isSaddled() || vehicle instanceof Camel camel && camel.isCamelSitting());
 	}
 	
-	public void update() {
+	public void update(LivingEntity host, float targetBreastSize) {
 		this.prePositionY          = this.positionY;
 		this.prePositionX          = this.positionX;
 		this.wfg_preBounceRotation = this.wfg_bounceRotation;
-		this.preBreastSize          = this.breastSize;
+		this.preBreastSize         = this.breastSize;
 		if (this.prePos == null) {
 			this.prePos = host.position();
 			return;
 		}
-		float breastWeight = settings.getSize() * 1.25F;
-		float targetBreastSize = settings.getSize();
+		float breastWeight = targetBreastSize * 1.25F;
 		this.breastSize += (this.breastSize < targetBreastSize) ? (Math.abs(this.breastSize - targetBreastSize) / 2.0F) : (-Math.abs(
 				this.breastSize - targetBreastSize) / 2.0F);
 		Vec3 motion = host.position().subtract(this.prePos);
@@ -68,7 +62,7 @@ public class BreastModelPhyisics {
 		float bounceIntensity = targetBreastSize * 3.0F * Math.round(0.333f * 3.0F * 100.0F) / 100.0F;
 		bounceIntensity *= random.nextFloat() + 0.5f;
 		if (host.fallDistance > 0.0F && !this.alreadyFalling) {
-			this.randomB        = (host.level()).getRandom().nextBoolean() ? -1 : 1;
+			this.randomB        = host.level().getRandom().nextBoolean() ? -1 : 1;
 			this.alreadyFalling = true;
 		}
 		if (host.fallDistance == 0.0F)
@@ -210,9 +204,9 @@ public class BreastModelPhyisics {
 	}
 	
 	private static boolean shouldUseVehicleYaw(LivingEntity rider, Entity vehicle) {
-		return (vehicle.hasControllingPassenger() || vehicle instanceof Boat || vehicle
-				                                                                        
-				                                                                        .getVisualRotationYInDegrees() == rider.getVisualRotationYInDegrees());
+		return (vehicle.hasControllingPassenger()
+		        || vehicle instanceof Boat
+		        || vehicle.getVisualRotationYInDegrees() == rider.getVisualRotationYInDegrees());
 	}
 	
 	private static float calcRotation(LivingEntity entity, float bounceIntensity) {

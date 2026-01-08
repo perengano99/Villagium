@@ -1,11 +1,13 @@
 package com.perengano99.villagium.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.perengano99.villagium.client.BreastPhysicsManager;
+import com.perengano99.villagium.client.physics.BreastPhysicsManager;
 import com.perengano99.villagium.client.model.VillagiumModel;
-import com.perengano99.villagium.client.renderer.BreastsRenderer;
-import com.perengano99.villagium.client.renderer.layer.BreastsLayer;
+import com.perengano99.villagium.client.renderer.BreastModelRenderer;
+import com.perengano99.villagium.client.renderer.layer.BreastLayer;
+import com.perengano99.villagium.client.renderer.state.BreastPhysicsState;
 import com.perengano99.villagium.client.renderer.state.NvHumanoidRenderState;
+import com.perengano99.villagium.core.registration.ModAttachments;
 import com.perengano99.villagium.entity.VillagiumMob;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -15,11 +17,11 @@ import org.jspecify.annotations.NonNull;
 
 public abstract class VillagiumRenderer<T extends VillagiumMob<T>, S extends NvHumanoidRenderState, M extends VillagiumModel<S>> extends MobRenderer<T, S, M> {
 	
-	public static final BreastsRenderer breastsRenderer = new BreastsRenderer();
+	public static final BreastModelRenderer breastsRenderer = new BreastModelRenderer();
 	
 	public VillagiumRenderer(EntityRendererProvider.Context context, M model) {
 		super(context, model, 0.5f);
-		addLayer(new BreastsLayer<>(this));
+		addLayer(new BreastLayer<>(this));
 	}
 	
 	@Override
@@ -32,10 +34,12 @@ public abstract class VillagiumRenderer<T extends VillagiumMob<T>, S extends NvH
 	
 	@Override
 	public void extractRenderState(T entity, S state, float partialTicks) {
-		var stt = BreastPhysicsManager.get(entity);
-		stt.setSize(1.2f);
-		state.buildBreast(entity, stt, partialTicks);
 		
+		var physicsState = entity.getData(ModAttachments.BREAST_PHYSICS);
+		if (physicsState instanceof BreastPhysicsState) {
+			var stt = BreastPhysicsManager.get(entity);
+			state.buildBreast(entity, stt, (BreastPhysicsState) physicsState, partialTicks);
+		}
 		super.extractRenderState(entity, state, partialTicks);
 	}
 }

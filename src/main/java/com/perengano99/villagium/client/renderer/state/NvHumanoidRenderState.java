@@ -1,14 +1,12 @@
 package com.perengano99.villagium.client.renderer.state;
 
-import com.perengano99.villagium.client.model.BreastModel;
 import com.perengano99.villagium.client.renderer.entity.VillagiumRenderer;
+import com.perengano99.villagium.entity.BreastSettings;
 import com.perengano99.villagium.entity.VillagiumMob;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.level.block.Blocks;
 
 public class NvHumanoidRenderState extends HumanoidRenderState {
 	
@@ -17,14 +15,17 @@ public class NvHumanoidRenderState extends HumanoidRenderState {
 	public float breastCurrentSize;
 	public float breastCurrentZOffset;
 	
-	public void buildBreast(VillagiumMob<?> creature, BreastModel.Settings settings, float partialTick){
-		// Supongamos que es veija.
+	public void buildBreast(VillagiumMob<?> entity, BreastSettings settings, BreastPhysicsState physicsState, float partialTicks) {
+		// Si se llama a buildBreast, es vieja.
 		
-		// if (female == true)
-		isFemale = true;
-		breastCurrentSize = settings.getSize();
+		isFemale             = true;
+		breastCurrentSize    = settings.getSize();
 		breastCurrentZOffset = settings.getOffsetZ();
 		
-		VillagiumRenderer.breastsRenderer.build(settings, partialTick, creature);
+		boolean breath = (!entity.isUnderWater() || entity.hasEffect(MobEffects.WATER_BREATHING) || entity.level().getBlockState(
+				new BlockPos(entity.getBlockX(), entity.getBlockY(), entity.getBlockZ())).is(Blocks.BUBBLE_COLUMN));
+		
+		VillagiumRenderer.breastsRenderer.
+				build(physicsState, settings.getOffsetX(), settings.getOffsetY(), settings.getOffsetZ(), settings.getSize(), settings.getOutward(), breath, partialTicks);
 	}
 }

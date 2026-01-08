@@ -1,6 +1,7 @@
 package com.perengano99.villagium;
 
 import com.mojang.logging.LogUtils;
+import com.perengano99.villagium.core.registration.ModAttachments;
 import com.perengano99.villagium.core.registration.ModEntityTypes;
 import com.perengano99.villagium.core.registration.ModItems;
 import com.perengano99.villagium.core.util.logging.Logger;
@@ -54,6 +55,7 @@ public class Villagium {
 		modEventBus.addListener(this::onAttributeCreate);
 		
 		ModEntityTypes.register(modEventBus);
+		ModAttachments.register(modEventBus);
 		ModItems.register(modEventBus);
 		
 		CREATIVE_MODE_TABS.register(modEventBus);
