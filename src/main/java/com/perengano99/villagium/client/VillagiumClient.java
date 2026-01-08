@@ -7,12 +7,14 @@ import com.perengano99.villagium.client.renderer.entity.NvVillagerRenderer;
 import com.perengano99.villagium.core.registration.ModEntityTypes;
 import com.perengano99.villagium.core.util.logging.Logger;
 import net.minecraft.client.Minecraft;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
@@ -20,7 +22,10 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 @EventBusSubscriber(modid = Villagium.MODID, value = Dist.CLIENT)
 public final class VillagiumClient {
+	
 	private static final Logger LOGGER = Logger.getLogger();
+	
+	private static final ResourcesReloadListener RELOAD_LISTENER = new ResourcesReloadListener();
 	
 	public VillagiumClient(ModContainer container) {
 		container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
@@ -33,15 +38,19 @@ public final class VillagiumClient {
 	}
 	
 	@SubscribeEvent
-	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event){
+	public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		event.registerEntityRenderer(ModEntityTypes.NV_VILLAGER.get(), NvVillagerRenderer::new);
 	}
 	
 	
 	@SubscribeEvent
-	public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event){
+	public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
 		event.registerLayerDefinition(NvVillagerModel.BODY_LAYER, NvVillagerModel::createBodyLayer);
-
+	}
+	
+	@SubscribeEvent
+	public static void onRegisterClientReloadListeners(AddClientReloadListenersEvent event) {
+		event.addListener(Identifier.fromNamespaceAndPath(Villagium.MODID, "MOD_RELOAD_LISTENER"), RELOAD_LISTENER);
 	}
 	
 	@SubscribeEvent
