@@ -1,6 +1,6 @@
 package com.perengano99.villagium.client;
 
-import com.perengano99.villagium.client.renderer.DynamicColorTextureManager;
+import com.perengano99.villagium.client.renderer.HslTextureBaker;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
@@ -15,6 +15,6 @@ public class ResourcesReloadListener extends SimplePreparableReloadListener<Void
 	
 	@Override
 	protected void apply(Void unused, @NonNull ResourceManager resourceManager, @NonNull ProfilerFiller profilerFiller) {
-		DynamicColorTextureManager.clearCache();
+		HslTextureBaker.clearCache();
 	}
 }

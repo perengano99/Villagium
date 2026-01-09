@@ -17,6 +17,8 @@ import org.jetbrains.annotations.NotNull;
 public class NvVillagerModel<T extends NvVillagerRenderState> extends VillagiumModel<T> {
 	
 	public static final ModelLayerLocation BODY_LAYER = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Villagium.MODID, "villager_body"), "body");
+	public static final ModelLayerLocation CLOTHES_LAYER = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Villagium.MODID, "villager_clothes"), "clothes");
+	public static final ModelLayerLocation HAIR_LAYER = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Villagium.MODID, "villager_hair"), "hair");
 	
 	public NvVillagerModel(ModelPart root) {
 		super(root);

@@ -46,11 +46,13 @@ public final class VillagiumClient {
 	@SubscribeEvent
 	public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
 		event.registerLayerDefinition(NvVillagerModel.BODY_LAYER, NvVillagerModel::createBodyLayer);
+		event.registerLayerDefinition(NvVillagerModel.CLOTHES_LAYER, NvVillagerModel::createClothesLayer);
+		event.registerLayerDefinition(NvVillagerModel.HAIR_LAYER, NvVillagerModel::createHairLayer);
 	}
 	
 	@SubscribeEvent
 	public static void onRegisterClientReloadListeners(AddClientReloadListenersEvent event) {
-		event.addListener(Identifier.fromNamespaceAndPath(Villagium.MODID, "MOD_RELOAD_LISTENER"), RELOAD_LISTENER);
+		event.addListener(Identifier.fromNamespaceAndPath(Villagium.MODID, "mod_reload_listener"), RELOAD_LISTENER);
 	}
 	
 	@SubscribeEvent

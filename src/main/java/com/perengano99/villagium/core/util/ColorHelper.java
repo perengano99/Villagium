@@ -1,5 +1,7 @@
 package com.perengano99.villagium.core.util;
 
+import net.minecraft.util.Mth;
+
 public final class ColorHelper {
 	
 	private ColorHelper() {}
@@ -59,6 +61,32 @@ public final class ColorHelper {
 		}
 		
 		return new int[] { (int) (r * 255), (int) (g * 255), (int) (b * 255) };
+	}
+	
+	/**
+	 * Convierte HSL a RGB empaquetado (int).
+	 *
+	 * @return Color ARGB (Alpha es 255 siempre aquí)
+	 */
+	public static int hslToRgbInt(float h, float s, float l) {
+		float r, g, b;
+		
+		if (s == 0) {
+			r = g = b = l; // Acromático
+		} else {
+			float q = l < 0.5f ? l * (1 + s) : l + s - l * s;
+			float p = 2 * l - q;
+			h /= 360f; // Normalizar H a 0-1
+			r = hue2rgb(p, q, h + 1f / 3f);
+			g = hue2rgb(p, q, h);
+			b = hue2rgb(p, q, h - 1f / 3f);
+		}
+		
+		// Empaquetar y clampear en una sola pasada. Efficient.
+		return (0xFF << 24) |
+		       ((int) (Mth.clamp(r, 0, 1) * 255) << 16) |
+		       ((int) (Mth.clamp(g, 0, 1) * 255) << 8) |
+		       ((int) (Mth.clamp(b, 0, 1) * 255));
 	}
 	
 	private static float hue2rgb(float p, float q, float t) {

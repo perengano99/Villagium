@@ -1,6 +1,6 @@
 package com.perengano99.villagium.client.renderer.state;
 
-import com.perengano99.villagium.client.renderer.entity.VillagiumRenderer;
+import com.perengano99.villagium.client.renderer.entity.NvHumanoidRenderer;
 import com.perengano99.villagium.entity.BreastSettings;
 import com.perengano99.villagium.entity.VillagiumMob;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
@@ -25,7 +25,7 @@ public class NvHumanoidRenderState extends HumanoidRenderState {
 		boolean breath = (!entity.isUnderWater() || entity.hasEffect(MobEffects.WATER_BREATHING) || entity.level().getBlockState(
 				new BlockPos(entity.getBlockX(), entity.getBlockY(), entity.getBlockZ())).is(Blocks.BUBBLE_COLUMN));
 		
-		VillagiumRenderer.breastsRenderer.
+		NvHumanoidRenderer.breastsRenderer.
 				build(physicsState, settings.getOffsetX(), settings.getOffsetY(), settings.getOffsetZ(), settings.getSize(), settings.getOutward(), breath, partialTicks);
 	}
 }
