@@ -5,8 +5,7 @@ import com.perengano99.villagium.client.model.NvVillagerModel;
 import com.perengano99.villagium.client.renderer.BreastModelRenderer.BreastBox;
 import com.perengano99.villagium.client.renderer.HslTextureBaker;
 import com.perengano99.villagium.client.renderer.SkinTones;
-import com.perengano99.villagium.client.renderer.layer.NvVillagerClothesLayer;
-import com.perengano99.villagium.client.renderer.layer.NvVillagerHairLayer;
+import com.perengano99.villagium.client.renderer.layer.NvVillagerHairClothesLayer;
 import com.perengano99.villagium.client.renderer.state.NvVillagerRenderState;
 import com.perengano99.villagium.entity.npc.NvVillager;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -24,8 +23,8 @@ public class NvVillagerRenderer extends NvHumanoidRenderer<NvVillager, NvVillage
 	
 	public NvVillagerRenderer(EntityRendererProvider.Context context) {
 		super(context, new NvVillagerModel<>(context.bakeLayer(NvVillagerModel.BODY_LAYER)));
-		addLayer(new NvVillagerClothesLayer(this, context));
-		addLayer(new NvVillagerHairLayer(this, context));
+		addLayer(new NvVillagerHairClothesLayer(this, context, false));
+		addLayer(new NvVillagerHairClothesLayer(this, context, true));
 	}
 	
 	@Override
