@@ -1,4 +1,4 @@
-package com.perengano99.villagium.client.physics;
+package com.perengano99.villagium.client.animations;
 
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;

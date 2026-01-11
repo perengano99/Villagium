@@ -1,6 +1,8 @@
-package com.perengano99.villagium.client.physics;
+package com.perengano99.villagium.client.animations;
 
+import com.perengano99.villagium.client.animations.face.FaceModelController;
 import com.perengano99.villagium.client.renderer.state.BreastPhysicsState;
+import com.perengano99.villagium.client.renderer.state.NvHumanoidRenderState;
 import com.perengano99.villagium.core.registration.ModAttachments;
 import com.perengano99.villagium.entity.BreastSettings;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,9 +16,14 @@ public class BreastPhysicsManager {
 	
 	// Usamos WeakHashMap para que si la entidad muere, el GC borre sus físicas.
 	private static final Map<LivingEntity, BreastSettings> CACHE = new WeakHashMap<>();
+	private static final Map<LivingEntity, FaceModelController<?>> FACE_CACHE = new WeakHashMap<>();
 	
 	public static BreastSettings get(LivingEntity entity) {
 		return CACHE.computeIfAbsent(entity, k -> new BreastSettings());
+	}
+	
+	public static FaceModelController<?> getFaceController(LivingEntity entity) {
+		return FACE_CACHE.computeIfAbsent(entity, k -> new FaceModelController<>());
 	}
 	
 	public static void tick(LivingEntity entity) {

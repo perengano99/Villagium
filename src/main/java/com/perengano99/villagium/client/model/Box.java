@@ -74,9 +74,9 @@ public class Box {
 		this.quads[4] = new TexturedQuad(texU + dz, texV + dz, texU + dz + dx, texV + dz + dy, tW, tH, mirror, Direction.NORTH, vertex, vertex7, vertex2, vertex1);
 	}
 	
-	public void render(PoseStack poseStack, VertexConsumer consumer, int packedLight, int packedOverlay, int color) {
-		Matrix4f matrix4f = poseStack.last().pose();
-		Matrix3f matrix3f = poseStack.last().normal();
+	public void render(PoseStack.Pose pose, VertexConsumer consumer, int packedLight, int packedOverlay, int color) {
+		Matrix4f matrix4f = pose.pose();
+		Matrix3f matrix3f = pose.normal();
 		
 		for (var quad : quads) {
 			Vector3f vector3f = new Vector3f(quad.normal.x, quad.normal.y, quad.normal.z).mul(matrix3f);

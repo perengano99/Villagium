@@ -2,7 +2,7 @@ package com.perengano99.villagium.client;
 
 import com.perengano99.villagium.Villagium;
 import com.perengano99.villagium.client.model.NvVillagerModel;
-import com.perengano99.villagium.client.physics.BreastPhysicsManager;
+import com.perengano99.villagium.client.animations.BreastPhysicsManager;
 import com.perengano99.villagium.client.renderer.entity.NvVillagerRenderer;
 import com.perengano99.villagium.core.registration.ModEntityTypes;
 import com.perengano99.villagium.core.util.logging.Logger;

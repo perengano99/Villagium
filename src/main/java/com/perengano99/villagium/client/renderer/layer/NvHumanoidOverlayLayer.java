@@ -18,8 +18,6 @@ import net.minecraft.util.ARGB;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-import java.util.function.Function;
-
 public abstract class NvHumanoidOverlayLayer<S extends NvHumanoidRenderState, M extends VillagiumModel<S>> extends RenderLayer<S, M> {
 	
 	protected final M model;

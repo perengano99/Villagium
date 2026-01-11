@@ -2,9 +2,10 @@ package com.perengano99.villagium.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.perengano99.villagium.client.model.parts.BreastModel;
-import com.perengano99.villagium.client.physics.BreastPhysicsManager;
+import com.perengano99.villagium.client.animations.BreastPhysicsManager;
 import com.perengano99.villagium.client.model.VillagiumModel;
 import com.perengano99.villagium.client.renderer.BreastModelRenderer;
+import com.perengano99.villagium.client.renderer.layer.DynamicFaceLayer;
 import com.perengano99.villagium.client.renderer.state.BreastPhysicsState;
 import com.perengano99.villagium.client.renderer.state.NvHumanoidRenderState;
 import com.perengano99.villagium.core.registration.ModAttachments;
@@ -14,7 +15,6 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
-import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.CameraRenderState;
@@ -26,6 +26,7 @@ public abstract class NvHumanoidRenderer<T extends VillagiumMob<T>, S extends Nv
 	
 	public NvHumanoidRenderer(EntityRendererProvider.Context context, M model) {
 		super(context, model, 0.5f);
+		addLayer(new DynamicFaceLayer<>(this));
 		addLayer(new BreastLayer());
 	}
 	
@@ -45,6 +46,11 @@ public abstract class NvHumanoidRenderer<T extends VillagiumMob<T>, S extends Nv
 	
 	@Override
 	public void extractRenderState(T entity, S state, float partialTicks) {
+		state.faceModelController = BreastPhysicsManager.getFaceController(entity);
+		
+		state.gameTime = entity.level().getGameTime();
+		
+		// Pechos
 		var physicsState = entity.getData(ModAttachments.BREAST_PHYSICS);
 		if (physicsState instanceof BreastPhysicsState) {
 			var stt = BreastPhysicsManager.get(entity);

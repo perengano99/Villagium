@@ -1,15 +1,31 @@
 package com.perengano99.villagium.client.renderer.state;
 
+import com.perengano99.villagium.client.animations.face.FaceModelController;
 import com.perengano99.villagium.client.renderer.entity.NvHumanoidRenderer;
 import com.perengano99.villagium.entity.BreastSettings;
 import com.perengano99.villagium.entity.VillagiumMob;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.Blocks;
 
+import java.util.Random;
+
 public class NvHumanoidRenderState extends HumanoidRenderState {
 	
+	private final Random random;
+	
+	
+	public NvHumanoidRenderState() {
+		random = new Random();
+	}
+	
+	public FaceModelController<?> faceModelController;
+	public long gameTime;
+	
+	public Identifier faceTexture;
+	public int irisColor;
 	
 	public boolean isFemale;
 	public float breastCurrentSize;
@@ -27,5 +43,9 @@ public class NvHumanoidRenderState extends HumanoidRenderState {
 		
 		NvHumanoidRenderer.breastsRenderer.
 				build(physicsState, settings.getOffsetX(), settings.getOffsetY(), settings.getOffsetZ(), settings.getSize(), settings.getOutward(), breath, partialTicks);
+	}
+	
+	public Random getRandom() {
+		return random;
 	}
 }

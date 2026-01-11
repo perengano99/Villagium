@@ -20,6 +20,7 @@ public class NvVillagerRenderer extends NvHumanoidRenderer<NvVillager, NvVillage
 	
 	private static final Identifier CLOTHES_TEXTURE = Identifier.fromNamespaceAndPath(Villagium.MODID, "textures/entity/nv_villager/female/clothes/default.png");
 	private static final Identifier HAIR_TEXTURE = Identifier.fromNamespaceAndPath(Villagium.MODID, "textures/entity/nv_villager/female/hair/default.png");
+	private static final Identifier FACE_TEXTURE = Identifier.fromNamespaceAndPath(Villagium.MODID, "textures/entity/nv_villager/female/face/default.png");
 	
 	public NvVillagerRenderer(EntityRendererProvider.Context context) {
 		super(context, new NvVillagerModel<>(context.bakeLayer(NvVillagerModel.BODY_LAYER)));
@@ -34,14 +35,16 @@ public class NvVillagerRenderer extends NvHumanoidRenderer<NvVillager, NvVillage
 	
 	@Override
 	public void extractRenderState(NvVillager entity, NvVillagerRenderState state, float partialTicks) {
-		state.clothes = CLOTHES_TEXTURE;
-		state.hair    = HAIR_TEXTURE;
+		state.clothes     = CLOTHES_TEXTURE;
+		state.hair        = HAIR_TEXTURE;
+		state.faceTexture = FACE_TEXTURE;
+		state.irisColor   = 0x4B3621;
 		super.extractRenderState(entity, state, partialTicks);
 	}
 	
 	@Override
 	public @NonNull Identifier getTextureLocation(NvVillagerRenderState nvVillagerRenderState) {
-		return HslTextureBaker.getBakedTexture(SkinTones.SKIN_TONE_IVORY, TEXTURE);
+		return HslTextureBaker.getBakedTexture(SkinTones.SKIN_TONE_PEACH, TEXTURE);
 	}
 	
 	@Override
