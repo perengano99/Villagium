@@ -4,9 +4,10 @@ import com.perengano99.villagium.client.renderer.state.NvHumanoidRenderState;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class VillagiumModel<T extends NvHumanoidRenderState> extends EntityModel<T> implements ArmedModel<T> {
+public abstract class NvHumanoidModel<T extends NvHumanoidRenderState> extends EntityModel<T> implements ArmedModel<T> {
 	
 	public static final float HAIR_DEFORMATION = 0.013f;
 	public static final float HAIR_OV_DEFORMATION = 0.1f;
@@ -44,7 +45,7 @@ public abstract class VillagiumModel<T extends NvHumanoidRenderState> extends En
 	@Nullable protected final ModelPart rightLeg_ov;
 	@Nullable protected final ModelPart leftLeg_ov;
 	
-	protected VillagiumModel(ModelPart root) {
+	protected NvHumanoidModel(ModelPart root) {
 		super(root);
 		
 		this.root     = root;
@@ -71,7 +72,27 @@ public abstract class VillagiumModel<T extends NvHumanoidRenderState> extends En
 		}
 	}
 	
-	protected void copyBasePoseToOverlays(){
+	@Override
+	public void setupAnim(T state) {
+		super.setupAnim(state);
+		
+		animateHeadLook(state.xRot, state.yRot);
+		animate(state);
+		
+		copyBasePoseToOverlays();
+	}
+	
+	protected void animate(T state) {}
+	
+	protected void animateHeadLook(float netHeadYaw, float headPitch) {
+		head.yRot = netHeadYaw * Mth.DEG_TO_RAD;
+		head.xRot = headPitch * Mth.DEG_TO_RAD;
+		
+		float tilt = netHeadYaw * Mth.DEG_TO_RAD * -.05f;
+		head.zRot = Mth.clamp(tilt, -.1f, .12f);
+	}
+	
+	protected void copyBasePoseToOverlays() {
 		if (head_ov != null) head_ov.loadPose(head.storePose());
 		if (body_ov != null) body_ov.loadPose(body.storePose());
 		if (rightLeg_ov != null) rightLeg_ov.loadPose(rightLeg.storePose());

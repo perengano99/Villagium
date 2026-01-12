@@ -1,6 +1,6 @@
 package com.perengano99.villagium.client.renderer.state;
 
-import com.perengano99.villagium.client.animations.BreastModelPhysics;
+import com.perengano99.villagium.client.animation.BreastModelPhysics;
 import com.perengano99.villagium.entity.BreastSettings;
 import net.minecraft.world.entity.LivingEntity;
 

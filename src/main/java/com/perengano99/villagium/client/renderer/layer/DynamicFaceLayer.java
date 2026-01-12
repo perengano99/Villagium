@@ -1,8 +1,8 @@
 package com.perengano99.villagium.client.renderer.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.perengano99.villagium.client.animations.face.FaceModelAnimator;
-import com.perengano99.villagium.client.model.VillagiumModel;
+import com.perengano99.villagium.client.animation.face.FaceModelAnimator;
+import com.perengano99.villagium.client.model.NvHumanoidModel;
 import com.perengano99.villagium.client.model.parts.FacePartModel;
 import com.perengano99.villagium.client.renderer.state.NvHumanoidRenderState;
 import net.minecraft.client.model.geom.ModelPart;
@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.resources.Identifier;
 import org.jspecify.annotations.NonNull;
 
-public class DynamicFaceLayer<S extends NvHumanoidRenderState, M extends VillagiumModel<S>> extends RenderLayer<S, M> {
+public class DynamicFaceLayer<S extends NvHumanoidRenderState, M extends NvHumanoidModel<S>> extends RenderLayer<S, M> {
 	
 	public DynamicFaceLayer(RenderLayerParent<S, M> renderer) {
 		super(renderer);

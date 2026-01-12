@@ -1,4 +1,4 @@
-package com.perengano99.villagium.client.animations.face;
+package com.perengano99.villagium.client.animation.face;
 
 import com.perengano99.villagium.Villagium;
 import com.perengano99.villagium.client.renderer.state.NvHumanoidRenderState;

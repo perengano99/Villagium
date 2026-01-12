@@ -1,10 +1,8 @@
-package com.perengano99.villagium.client.animations.face;
+package com.perengano99.villagium.client.animation.face;
 
 import com.perengano99.villagium.client.renderer.state.NvHumanoidRenderState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.RandomSource;
-
-import java.util.Random;
 
 public class BlinkAnimation<S extends NvHumanoidRenderState> implements IFaceModelAnimation<S> {
 	

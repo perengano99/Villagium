@@ -2,26 +2,29 @@ package com.perengano99.villagium.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.perengano99.villagium.Villagium;
+import com.perengano99.villagium.client.animation.definitions.HumanoidAnimation;
 import com.perengano99.villagium.client.renderer.state.NvVillagerRenderState;
+import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.HumanoidArm;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
-public class NvVillagerModel<T extends NvVillagerRenderState> extends VillagiumModel<T> {
+public class NvVillagerModel<T extends NvVillagerRenderState> extends NvHumanoidModel<T> {
 	
 	public static final ModelLayerLocation BODY_LAYER = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Villagium.MODID, "villager_body"), "body");
 	public static final ModelLayerLocation CLOTHES_LAYER = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Villagium.MODID, "villager_clothes"), "clothes");
 	public static final ModelLayerLocation HAIR_LAYER = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Villagium.MODID, "villager_hair"), "hair");
 	
+	private final KeyframeAnimation femaleIdleAnim;
+	
 	public NvVillagerModel(ModelPart root) {
 		super(root);
+		femaleIdleAnim = HumanoidAnimation.FEMALE_IDLE.bake(root);
 	}
 	
 	public static @NotNull LayerDefinition createBodyLayer() {
@@ -73,6 +76,16 @@ public class NvVillagerModel<T extends NvVillagerRenderState> extends VillagiumM
 		                                                                                     .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, deform),
 		                                 PartPose.offsetAndRotation(1.9F, 12.0F, 0.0F, 0, -0.01F, -0.023F));
 		return partdefinition;
+	}
+	
+	@Override
+	protected void animate(T state) {
+		
+		// Esta configurado para que siempre lo sea en este momento.
+		if (state.isFemale) {
+			femaleIdleAnim.apply(state.fIdleAnimState, state.ageInTicks);
+		}
+		
 	}
 	
 	@Override

@@ -1,6 +1,6 @@
-package com.perengano99.villagium.client.animations;
+package com.perengano99.villagium.client.animation;
 
-import com.perengano99.villagium.client.animations.face.FaceModelAnimator;
+import com.perengano99.villagium.client.animation.face.FaceModelAnimator;
 import com.perengano99.villagium.client.renderer.state.BreastPhysicsState;
 import com.perengano99.villagium.core.registration.ModAttachments;
 import com.perengano99.villagium.entity.BreastSettings;

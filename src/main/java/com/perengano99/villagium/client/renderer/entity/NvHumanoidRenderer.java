@@ -2,8 +2,8 @@ package com.perengano99.villagium.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.perengano99.villagium.client.model.parts.BreastModel;
-import com.perengano99.villagium.client.animations.TempAnimManager;
-import com.perengano99.villagium.client.model.VillagiumModel;
+import com.perengano99.villagium.client.animation.TempAnimManager;
+import com.perengano99.villagium.client.model.NvHumanoidModel;
 import com.perengano99.villagium.client.renderer.BreastModelRenderer;
 import com.perengano99.villagium.client.renderer.layer.DynamicFaceLayer;
 import com.perengano99.villagium.client.renderer.state.BreastPhysicsState;
@@ -20,7 +20,7 @@ import net.minecraft.client.renderer.rendertype.RenderType;
 import net.minecraft.client.renderer.state.CameraRenderState;
 import org.jspecify.annotations.NonNull;
 
-public abstract class NvHumanoidRenderer<T extends VillagiumMob<T>, S extends NvHumanoidRenderState, M extends VillagiumModel<S>> extends MobRenderer<T, S, M> {
+public abstract class NvHumanoidRenderer<T extends VillagiumMob<T>, S extends NvHumanoidRenderState, M extends NvHumanoidModel<S>> extends MobRenderer<T, S, M> {
 	
 	public static final BreastModelRenderer breastsRenderer = new BreastModelRenderer();
 	
@@ -36,6 +36,7 @@ public abstract class NvHumanoidRenderer<T extends VillagiumMob<T>, S extends Nv
 	
 	@Override
 	public void submit(S state, @NonNull PoseStack poseStack, @NonNull SubmitNodeCollector submitNodeCollector, @NonNull CameraRenderState camera) {
+		model.setupAnim(state);
 		super.submit(state, poseStack, submitNodeCollector, camera);
 	}
 	

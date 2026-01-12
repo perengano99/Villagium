@@ -1,6 +1,6 @@
 package com.perengano99.villagium.client.renderer.state;
 
-import com.perengano99.villagium.client.animations.face.FaceModelAnimator;
+import com.perengano99.villagium.client.animation.face.FaceModelAnimator;
 import com.perengano99.villagium.client.renderer.entity.NvHumanoidRenderer;
 import com.perengano99.villagium.entity.BreastSettings;
 import com.perengano99.villagium.entity.VillagiumMob;
@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.level.block.Blocks;
 
 public class NvHumanoidRenderState extends HumanoidRenderState {
@@ -23,9 +24,15 @@ public class NvHumanoidRenderState extends HumanoidRenderState {
 	public Identifier faceTexture;
 	public int irisColor;
 	
+	public final AnimationState fIdleAnimState;
+	
 	public boolean isFemale;
 	public float breastCurrentSize;
 	public float breastCurrentZOffset;
+	
+	public NvHumanoidRenderState() {
+		fIdleAnimState = new AnimationState();
+	}
 	
 	public void buildBreast(VillagiumMob<?> entity, BreastSettings settings, BreastPhysicsState physicsState, float partialTicks) {
 		// Si se llama a buildBreast, es vieja.

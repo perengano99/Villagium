@@ -1,7 +1,7 @@
 package com.perengano99.villagium.client.renderer.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.perengano99.villagium.client.model.VillagiumModel;
+import com.perengano99.villagium.client.model.NvHumanoidModel;
 import com.perengano99.villagium.client.model.parts.BreastModel;
 import com.perengano99.villagium.client.renderer.BreastModelRenderer.BreastBox;
 import com.perengano99.villagium.client.renderer.entity.NvHumanoidRenderer;
@@ -18,7 +18,7 @@ import net.minecraft.util.ARGB;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-public abstract class NvHumanoidOverlayLayer<S extends NvHumanoidRenderState, M extends VillagiumModel<S>> extends RenderLayer<S, M> {
+public abstract class NvHumanoidOverlayLayer<S extends NvHumanoidRenderState, M extends NvHumanoidModel<S>> extends RenderLayer<S, M> {
 	
 	protected final M model;
 	@Nullable

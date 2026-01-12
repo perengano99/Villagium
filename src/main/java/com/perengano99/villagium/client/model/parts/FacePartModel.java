@@ -2,7 +2,7 @@ package com.perengano99.villagium.client.model.parts;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.perengano99.villagium.client.animations.face.FaceModelAnimator;
+import com.perengano99.villagium.client.animation.face.FaceModelAnimator;
 import com.perengano99.villagium.client.model.Box;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;
