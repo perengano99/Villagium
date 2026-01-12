@@ -35,10 +35,10 @@ public class NvVillagerRenderer extends NvHumanoidRenderer<NvVillager, NvVillage
 	
 	@Override
 	public void extractRenderState(NvVillager entity, NvVillagerRenderState state, float partialTicks) {
-		state.clothes     = CLOTHES_TEXTURE;
-		state.hair        = HAIR_TEXTURE;
-		state.faceTexture = FACE_TEXTURE;
-		state.irisColor   = 0x4B3621;
+		state.clothesTexture = CLOTHES_TEXTURE;
+		state.hairTexture    = HAIR_TEXTURE;
+		state.faceTexture    = FACE_TEXTURE;
+		state.irisColor      = 0x4B3621;
 		super.extractRenderState(entity, state, partialTicks);
 	}
 	

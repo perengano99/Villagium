@@ -6,6 +6,7 @@ import com.perengano99.villagium.core.registration.ModEntityTypes;
 import com.perengano99.villagium.core.registration.ModItems;
 import com.perengano99.villagium.core.util.logging.Logger;
 import com.perengano99.villagium.entity.VillagiumMob;
+import com.perengano99.villagium.entity.npc.NvVillager;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -39,16 +40,16 @@ public class Villagium {
 	public static final Logger LOGGER = Logger.getLogger();
 	
 	public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
-//	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
+	//	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
 	public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 	
 	public static final DeferredBlock<Block> EXAMPLE_BLOCK = BLOCKS.registerSimpleBlock("example_block", p -> p.mapColor(MapColor.STONE));
-//	public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
-//	public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", p -> p.food(new FoodProperties.Builder().alwaysEdible().nutrition(1)
-//	                                                                                                                                       .saturationModifier(2f).build()));
-//	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder().title(
-//			Component.translatable("itemGroup" + ".villagium")).withTabsBefore(CreativeModeTabs.COMBAT).icon(() -> EXAMPLE_ITEM.get().getDefaultInstance()).displayItems(
-//			(parameters, output) -> output.accept(EXAMPLE_ITEM.get())).build());
+	//	public static final DeferredItem<BlockItem> EXAMPLE_BLOCK_ITEM = ITEMS.registerSimpleBlockItem("example_block", EXAMPLE_BLOCK);
+	//	public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item", p -> p.food(new FoodProperties.Builder().alwaysEdible().nutrition(1)
+	//	                                                                                                                                       .saturationModifier(2f).build()));
+	//	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder().title(
+	//			Component.translatable("itemGroup" + ".villagium")).withTabsBefore(CreativeModeTabs.COMBAT).icon(() -> EXAMPLE_ITEM.get().getDefaultInstance()).displayItems(
+	//			(parameters, output) -> output.accept(EXAMPLE_ITEM.get())).build());
 	
 	public Villagium(IEventBus modEventBus, ModContainer modContainer) {
 		modEventBus.addListener(this::commonSetup);
@@ -74,12 +75,12 @@ public class Villagium {
 	}
 	
 	public void onAttributeCreate(EntityAttributeCreationEvent event) {
-		event.put(ModEntityTypes.NV_VILLAGER.get(), VillagiumMob.createAttributes().build());
+		event.put(ModEntityTypes.NV_VILLAGER.get(), NvVillager.createAttributes().build());
 	}
 	
 	private void addCreative(BuildCreativeModeTabContentsEvent event) {
 		if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-//			event.accept(EXAMPLE_BLOCK_ITEM);
+			//			event.accept(EXAMPLE_BLOCK_ITEM);
 		}
 	}
 	

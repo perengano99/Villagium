@@ -11,8 +11,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.Blocks;
 
-import java.util.Random;
-
 public class NvHumanoidRenderState extends HumanoidRenderState {
 	
 	
@@ -20,6 +18,8 @@ public class NvHumanoidRenderState extends HumanoidRenderState {
 	public long gameTime;
 	public RandomSource levelRandom;
 	
+	public Identifier clothesTexture;
+	public Identifier hairTexture;
 	public Identifier faceTexture;
 	public int irisColor;
 	

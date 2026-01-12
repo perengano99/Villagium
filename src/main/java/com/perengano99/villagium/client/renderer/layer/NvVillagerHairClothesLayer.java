@@ -23,7 +23,7 @@ public class NvVillagerHairClothesLayer extends NvHumanoidOverlayLayer<NvVillage
 	
 	@Override
 	protected Identifier getTextureLocation(NvVillagerRenderState state) {
-		return isHair ? state.hair : state.clothes;
+		return isHair ? state.hairTexture : state.clothesTexture;
 	}
 	
 	private static BreastConfig getBreastConfig(boolean hair) {

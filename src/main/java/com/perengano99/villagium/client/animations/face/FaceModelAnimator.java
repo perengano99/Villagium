@@ -50,6 +50,7 @@ public class FaceModelAnimator<S extends NvHumanoidRenderState> {
 		
 		registerAnimation(new BlinkAnimation<>());
 		registerAnimation(new IrisMoveAnimation<>());
+		registerAnimation(new AhegaoAnimation<>());
 	}
 	
 	public Iterable<FacePartModel> getAllParts() {
