@@ -2,7 +2,7 @@ package com.perengano99.villagium.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.perengano99.villagium.client.model.parts.BreastModel;
-import com.perengano99.villagium.client.animations.BreastPhysicsManager;
+import com.perengano99.villagium.client.animations.TempAnimManager;
 import com.perengano99.villagium.client.model.VillagiumModel;
 import com.perengano99.villagium.client.renderer.BreastModelRenderer;
 import com.perengano99.villagium.client.renderer.layer.DynamicFaceLayer;
@@ -46,14 +46,15 @@ public abstract class NvHumanoidRenderer<T extends VillagiumMob<T>, S extends Nv
 	
 	@Override
 	public void extractRenderState(T entity, S state, float partialTicks) {
-		state.faceModelController = BreastPhysicsManager.getFaceController(entity);
+		state.faceModelController = TempAnimManager.getFaceController(entity);
 		
-		state.gameTime = entity.level().getGameTime();
+		state.gameTime    = entity.level().getGameTime();
+		state.levelRandom = entity.level().getRandom();
 		
 		// Pechos
 		var physicsState = entity.getData(ModAttachments.BREAST_PHYSICS);
 		if (physicsState instanceof BreastPhysicsState) {
-			var stt = BreastPhysicsManager.get(entity);
+			var stt = TempAnimManager.get(entity);
 			state.buildBreast(entity, stt, (BreastPhysicsState) physicsState, partialTicks);
 		}
 		super.extractRenderState(entity, state, partialTicks);

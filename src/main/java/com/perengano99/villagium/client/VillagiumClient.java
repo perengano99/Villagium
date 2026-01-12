@@ -2,7 +2,7 @@ package com.perengano99.villagium.client;
 
 import com.perengano99.villagium.Villagium;
 import com.perengano99.villagium.client.model.NvVillagerModel;
-import com.perengano99.villagium.client.animations.BreastPhysicsManager;
+import com.perengano99.villagium.client.animations.TempAnimManager;
 import com.perengano99.villagium.client.renderer.entity.NvVillagerRenderer;
 import com.perengano99.villagium.core.registration.ModEntityTypes;
 import com.perengano99.villagium.core.util.logging.Logger;
@@ -64,7 +64,7 @@ public final class VillagiumClient {
 		level.entitiesForRendering().forEach(entity -> {
 			if (entity instanceof LivingEntity living) {
 				// Aquí llamamos al manager para actualizar físicas
-				BreastPhysicsManager.tick(living);
+				TempAnimManager.tick(living);
 			}
 		});
 	}

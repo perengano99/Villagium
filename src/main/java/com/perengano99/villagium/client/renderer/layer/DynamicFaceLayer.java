@@ -1,7 +1,7 @@
 package com.perengano99.villagium.client.renderer.layer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.perengano99.villagium.client.animations.face.FaceModelController;
+import com.perengano99.villagium.client.animations.face.FaceModelAnimator;
 import com.perengano99.villagium.client.model.VillagiumModel;
 import com.perengano99.villagium.client.model.parts.FacePartModel;
 import com.perengano99.villagium.client.renderer.state.NvHumanoidRenderState;
@@ -26,14 +26,13 @@ public class DynamicFaceLayer<S extends NvHumanoidRenderState, M extends Villagi
 		if (state.faceModelController == null)
 			return;
 		
-		FaceModelController<S> controller = (FaceModelController<S>) state.faceModelController;
+		FaceModelAnimator<S> controller = (FaceModelAnimator<S>) state.faceModelController;
 		controller.update(state);
 		
 		ModelPart head = getParentModel().getHead();
 		
 		poseStack.pushPose();
 		head.translateAndRotate(poseStack);
-		
 		// Colocamos el origen en el centro del frontal de la cara.
 		poseStack.translate(0.0F, -0.25F, -0.250625F);
 		
@@ -41,15 +40,12 @@ public class DynamicFaceLayer<S extends NvHumanoidRenderState, M extends Villagi
 		int overlay = LivingEntityRenderer.getOverlayCoords(state, 0);
 		RenderType renderType = getRenderType(state, forceTransparent);
 		
-		render(controller.leftEyelid, poseStack, submitNodeCollector, renderType, light, overlay, 0xFFFFFF, state.partialTick);
-		render(controller.rightEyelid, poseStack, submitNodeCollector, renderType, light, overlay, 0xFFFFFF, state.partialTick);
-		
-		render(controller.leftEyebrow, poseStack, submitNodeCollector, renderType, light, overlay, 0xFFFFFF, state.partialTick);
-		render(controller.rightEyebrow, poseStack, submitNodeCollector, renderType, light, overlay, 0xFFFFFF, state.partialTick);
-		
-		render(controller.leftIris, poseStack, submitNodeCollector, renderType, light, overlay, state.irisColor, state.partialTick);
-		render(controller.rightIris, poseStack, submitNodeCollector, renderType, light, overlay, state.irisColor, state.partialTick);
-		
+		for (FacePartModel part : controller.getAllParts()) {
+			int color = 0xFFFFFF;
+			if (part == controller.leftIris || part == controller.rightIris)
+				color = state.irisColor;
+			render(part, poseStack, submitNodeCollector, renderType, light, overlay, color, state.partialTick);
+		}
 		poseStack.popPose();
 	}
 	

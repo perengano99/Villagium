@@ -2,7 +2,7 @@ package com.perengano99.villagium.client.model.parts;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import com.perengano99.villagium.client.animations.face.FaceModelController;
+import com.perengano99.villagium.client.animations.face.FaceModelAnimator;
 import com.perengano99.villagium.client.model.Box;
 import net.minecraft.util.Mth;
 import org.joml.Vector3f;
@@ -37,7 +37,7 @@ public class FacePartModel extends Box {
 		this.currentScaleZ = this.previousScaleZ = 1;
 	}
 	
-	public void commitTransforms(FaceModelController.AnimationTargets targets) {
+	public void commitTransforms(FaceModelAnimator.AnimationTargets targets) {
 		this.currentPosX   = targets.posX;
 		this.currentPosY   = targets.posY;
 		this.currentPosZ   = targets.posZ;
