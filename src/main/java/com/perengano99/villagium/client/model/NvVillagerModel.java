@@ -20,11 +20,15 @@ public class NvVillagerModel<T extends NvVillagerRenderState> extends NvHumanoid
 	public static final ModelLayerLocation CLOTHES_LAYER = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Villagium.MODID, "villager_clothes"), "clothes");
 	public static final ModelLayerLocation HAIR_LAYER = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Villagium.MODID, "villager_hair"), "hair");
 	
-	private final KeyframeAnimation femaleIdleAnim;
+	private final KeyframeAnimation idleAnim;
+	private final KeyframeAnimation walkAnim;
+	private final KeyframeAnimation fWalkUpperAnim;
 	
 	public NvVillagerModel(ModelPart root) {
 		super(root);
-		femaleIdleAnim = HumanoidAnimation.FEMALE_IDLE.bake(root);
+		idleAnim       = HumanoidAnimation.IDLE.bake(root);
+		walkAnim       = HumanoidAnimation.WALK_LOWER.bake(root);
+		fWalkUpperAnim = HumanoidAnimation.WALK_FEMALE_UPPER.bake(root);
 	}
 	
 	public static @NotNull LayerDefinition createBodyLayer() {
@@ -44,7 +48,7 @@ public class NvVillagerModel<T extends NvVillagerRenderState> extends NvHumanoid
 	public static @NotNull LayerDefinition createClothesLayer() {
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition partdefinition = createLayer(meshdefinition.getRoot(), false, false, 0, 0, 16, 0, 0, 0, 40, 0, 0, 16, 16, 16,
-		                                            new CubeDeformation(INNER_CLOTHES_DEFORMATION));
+				new CubeDeformation(INNER_CLOTHES_DEFORMATION));
 		createLayer(partdefinition, true, true, 32, 16, 16, 32, 0, 32, 40, 32, 0, 48, 16, 48, new CubeDeformation(OUTER_CLOTHES_DEFORMATION));
 		return LayerDefinition.create(meshdefinition, 64, 64);
 	}
@@ -55,26 +59,26 @@ public class NvVillagerModel<T extends NvVillagerRenderState> extends NvHumanoid
 		
 		// Cabeza (8x8 en UV, como en Minecraft)
 		partdefinition.addOrReplaceChild(ov ? KEY_HEAD_OV : KEY_HEAD,
-		                                 head ? CubeListBuilder.create().texOffs(hX, hY).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, deform) : CubeListBuilder.create(),
-		                                 PartPose.ZERO);
+				head ? CubeListBuilder.create().texOffs(hX, hY).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, deform) : CubeListBuilder.create(),
+				PartPose.ZERO);
 		
 		// Cuerpo (8x12 en UV)
 		PartDefinition bodyDef = partdefinition.addOrReplaceChild(ov ? KEY_BODY_OV : KEY_BODY,
-		                                                          CubeListBuilder.create().texOffs(bX, bY).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, deform),
-		                                                          PartPose.offset(0.0F, 0.0F, 0.0F));
+				CubeListBuilder.create().texOffs(bX, bY).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, deform),
+				PartPose.offset(0.0F, 0.0F, 0.0F));
 		
 		// Brazos (4x12 en UV)
 		bodyDef.addOrReplaceChild(ov ? KEY_RIGHT_ARM_OV : KEY_RIGHT_ARM, CubeListBuilder.create().texOffs(rAX, rAY).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, deform),
-		                          PartPose.offset(-5.0F, 2.0F, 0.0F));
+				PartPose.offset(-5.0F, 2.0F, 0.0F));
 		bodyDef.addOrReplaceChild(ov ? KEY_LEFT_ARM_OV : KEY_LEFT_ARM, CubeListBuilder.create().texOffs(lAX, lAY).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, deform),
-		                          PartPose.offset(5.0F, 2.0F, 0.0F));
+				PartPose.offset(5.0F, 2.0F, 0.0F));
 		
 		// Piernas (4x12 en UV)
 		partdefinition.addOrReplaceChild(ov ? KEY_RIGHT_LEG_OV : KEY_RIGHT_LEG, CubeListBuilder.create().texOffs(rLX, rLY).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, deform),
-		                                 PartPose.offsetAndRotation(-1.9F, 12.0F, 0.0F, 0, 0.01F, 0.023F));
+				PartPose.offsetAndRotation(-1.9F, 12.0F, 0.0F, 0, 0.01F, 0.023F));
 		partdefinition.addOrReplaceChild(ov ? KEY_LEFT_LEG_OV : KEY_LEFT_LEG, CubeListBuilder.create().texOffs(lLX, lLY).mirror()
-		                                                                                     .addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, deform),
-		                                 PartPose.offsetAndRotation(1.9F, 12.0F, 0.0F, 0, -0.01F, -0.023F));
+						.addBox(-2.0F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, deform),
+				PartPose.offsetAndRotation(1.9F, 12.0F, 0.0F, 0, -0.01F, -0.023F));
 		return partdefinition;
 	}
 	
@@ -82,10 +86,11 @@ public class NvVillagerModel<T extends NvVillagerRenderState> extends NvHumanoid
 	protected void animate(T state) {
 		
 		// Esta configurado para que siempre lo sea en este momento.
+		walkAnim.applyWalk(state.walkAnimationPos, state.walkAnimationSpeed, 1, 1);
 		if (state.isFemale) {
-			femaleIdleAnim.apply(state.fIdleAnimState, state.ageInTicks);
+			fWalkUpperAnim.applyWalk(state.walkAnimationPos, state.walkAnimationSpeed, 1, 1);
+			idleAnim.apply(state.idleAnimState, state.ageInTicks);
 		}
-		
 	}
 	
 	@Override

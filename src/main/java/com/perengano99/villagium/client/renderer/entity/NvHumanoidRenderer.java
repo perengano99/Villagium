@@ -52,6 +52,9 @@ public abstract class NvHumanoidRenderer<T extends VillagiumMob<T>, S extends Nv
 		state.gameTime    = entity.level().getGameTime();
 		state.levelRandom = entity.level().getRandom();
 		
+		state.idleAnimState.copyFrom(entity.idleAnimState);
+		
+		
 		// Pechos
 		var physicsState = entity.getData(ModAttachments.BREAST_PHYSICS);
 		if (physicsState instanceof BreastPhysicsState) {

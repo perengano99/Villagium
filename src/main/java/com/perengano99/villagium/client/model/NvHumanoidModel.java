@@ -76,7 +76,7 @@ public abstract class NvHumanoidModel<T extends NvHumanoidRenderState> extends E
 	public void setupAnim(T state) {
 		super.setupAnim(state);
 		
-		animateHeadLook(state.xRot, state.yRot);
+//		animateHeadLook(state.xRot, state.yRot);
 		animate(state);
 		
 		copyBasePoseToOverlays();

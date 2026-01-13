@@ -9,6 +9,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.profiling.Profiler;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.Brain;
@@ -63,6 +64,27 @@ public abstract class VillagiumMob<T extends VillagiumMob<T>> extends AgeableMob
 	
 	public static AttributeSupplier.Builder createAttributes() {
 		return Mob.createMobAttributes().add(Attributes.ATTACK_DAMAGE).add(Attributes.ATTACK_SPEED).add(Attributes.BLOCK_INTERACTION_RANGE, 1.5f).add(Attributes.BLOCK_BREAK_SPEED);
+	}
+	
+	// Esto se ira a un animmanager unico del cliente.
+	public final AnimationState idleAnimState = new AnimationState();
+	private int idleAnimationTimeout = 0;
+	private static final int IDLE_ANIMATION_TICKS = (int) (3.5f * 20);
+	
+	@Override
+	public void tick() {
+		super.tick();
+		
+		if (level().isClientSide())
+			setupAnimationStates();
+	}
+	
+	private void setupAnimationStates() {
+		if (this.idleAnimationTimeout <= 0) {
+			idleAnimationTimeout = IDLE_ANIMATION_TICKS;
+			idleAnimState.start(tickCount);
+		} else
+			--idleAnimationTimeout;
 	}
 	
 	@Override

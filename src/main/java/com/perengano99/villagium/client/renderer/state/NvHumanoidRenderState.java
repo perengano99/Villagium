@@ -24,14 +24,14 @@ public class NvHumanoidRenderState extends HumanoidRenderState {
 	public Identifier faceTexture;
 	public int irisColor;
 	
-	public final AnimationState fIdleAnimState;
+	public final AnimationState idleAnimState;
 	
 	public boolean isFemale;
 	public float breastCurrentSize;
 	public float breastCurrentZOffset;
 	
 	public NvHumanoidRenderState() {
-		fIdleAnimState = new AnimationState();
+		idleAnimState = new AnimationState();
 	}
 	
 	public void buildBreast(VillagiumMob<?> entity, BreastSettings settings, BreastPhysicsState physicsState, float partialTicks) {
