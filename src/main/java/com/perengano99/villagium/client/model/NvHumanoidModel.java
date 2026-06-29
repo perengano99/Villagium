@@ -1,6 +1,10 @@
 package com.perengano99.villagium.client.model;
 
+import com.perengano99.villagium.client.animation.ActiveAnimationRenderState;
+import com.perengano99.villagium.client.animation.AnimationCategory;
 import com.perengano99.villagium.client.renderer.state.NvHumanoidRenderState;
+import com.perengano99.villagium.core.util.logging.Logger;
+import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.ArmedModel;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -50,23 +54,24 @@ public abstract class NvHumanoidModel<T extends NvHumanoidRenderState> extends E
 		
 		this.root     = root;
 		this.body     = root.getChild(KEY_BODY);
-		this.head     = root.getChild(KEY_HEAD);
+		this.head     = body.getChild(KEY_HEAD);
 		this.rightArm = body.getChild(KEY_RIGHT_ARM);
 		this.leftArm  = body.getChild(KEY_LEFT_ARM);
 		this.rightLeg = root.getChild(KEY_RIGHT_LEG);
 		this.leftLeg  = root.getChild(KEY_LEFT_LEG);
 		
 		// Inicializa las partes del overlay, comprobando si existen primero.
-		this.head_ov     = root.hasChild(KEY_HEAD_OV) ? root.getChild(KEY_HEAD_OV) : null;
 		this.body_ov     = root.hasChild(KEY_BODY_OV) ? root.getChild(KEY_BODY_OV) : null;
 		this.rightLeg_ov = root.hasChild(KEY_RIGHT_LEG_OV) ? root.getChild(KEY_RIGHT_LEG_OV) : null;
 		this.leftLeg_ov  = root.hasChild(KEY_LEFT_LEG_OV) ? root.getChild(KEY_LEFT_LEG_OV) : null;
 		
-		// Los brazos del overlay son hijos de body_ov, así que comprobamos body_ov primero.
+		// El resto del cuerpo overlay es hijo de body_ov, así que comprobamos body_ov primero.
 		if (this.body_ov != null) {
+			this.head_ov     = this.body_ov.hasChild(KEY_HEAD_OV) ? this.body_ov.getChild(KEY_HEAD_OV) : null;
 			this.rightArm_ov = this.body_ov.hasChild(KEY_RIGHT_ARM_OV) ? this.body_ov.getChild(KEY_RIGHT_ARM_OV) : null;
 			this.leftArm_ov  = this.body_ov.hasChild(KEY_LEFT_ARM_OV) ? this.body_ov.getChild(KEY_LEFT_ARM_OV) : null;
 		} else {
+			this.head_ov     = null;
 			this.rightArm_ov = null;
 			this.leftArm_ov  = null;
 		}
@@ -74,13 +79,49 @@ public abstract class NvHumanoidModel<T extends NvHumanoidRenderState> extends E
 	
 	@Override
 	public void setupAnim(T state) {
-		super.setupAnim(state);
+		this.head.resetPose();
+		this.body.resetPose();
+		this.rightArm.resetPose();
+		this.leftArm.resetPose();
+		this.rightLeg.resetPose();
+		this.leftLeg.resetPose();
 		
-//		animateHeadLook(state.xRot, state.yRot);
+		if (this.head_ov != null) this.head_ov.resetPose();
+		if (this.body_ov != null) this.body_ov.resetPose();
+		if (this.rightArm_ov != null) this.rightArm_ov.resetPose();
+		if (this.leftArm_ov != null) this.leftArm_ov.resetPose();
+		if (this.rightLeg_ov != null) this.rightLeg_ov.resetPose();
+		if (this.leftLeg_ov != null) this.leftLeg_ov.resetPose();
+		
+		super.setupAnim(state);
 		animate(state);
+		
+		if (state.bakedAnimationHolder != null) {
+			boolean cancelWalk = false;
+			ActiveAnimationRenderState manualWalkState = null;
+			for (ActiveAnimationRenderState active : state.activeAnimations) {
+				KeyframeAnimation baked = state.bakedAnimationHolder.getBaked(active.id(), active.definition(), root);
+				if (baked != null) {
+					if (active.cancelsBaseWalk())
+						cancelWalk = true;
+					else if (active.category() == AnimationCategory.MOVEMENT && active.isManual())
+						manualWalkState = active;
+					
+					if (active.isWalk())
+						baked.applyWalk(state.walkAnimationPos, state.walkAnimationSpeed, 1, 1.0f);
+					else
+						baked.apply(active.state(), state.ageInTicks, active.speedFactor());
+				}
+			}
+			if (!cancelWalk)
+				animateLegs(state, manualWalkState);
+		}
 		
 		copyBasePoseToOverlays();
 	}
+	
+	
+	protected void animateLegs(T state, @Nullable ActiveAnimationRenderState manualState) {}
 	
 	protected void animate(T state) {}
 	

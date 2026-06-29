@@ -34,6 +34,7 @@ public abstract class NvHumanoidOverlayLayer<S extends NvHumanoidRenderState, M 
 	
 	@Override
 	public void submit(@NonNull PoseStack poseStack, @NonNull SubmitNodeCollector submitNodeCollector, int light, S state, float v, float v1) {
+		this.model.setupAnim(state);
 		RenderType renderType = getRenderType(state, !state.isInvisible, state.isInvisible && !state.isInvisibleToPlayer, state.appearsGlowing());
 		
 		// Animación?..
@@ -70,7 +71,7 @@ public abstract class NvHumanoidOverlayLayer<S extends NvHumanoidRenderState, M 
 	protected @Nullable RenderType getRenderType(S state, boolean isBodyVisible, boolean forceTransparent, boolean appearGlowing) {
 		Identifier texture = getTextureLocation(state);
 		if (forceTransparent)
-			return RenderTypes.itemEntityTranslucentCull(texture);
+			return RenderTypes.entityTranslucentCullItemTarget(texture);
 		else if (isBodyVisible)
 			return this.model.renderType(texture);
 		else

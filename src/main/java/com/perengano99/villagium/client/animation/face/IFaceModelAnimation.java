@@ -6,5 +6,6 @@ public interface IFaceModelAnimation<S extends NvHumanoidRenderState> {
 	
 	void tick(FaceModelAnimator<S> animator, long gameTime);
 	
-	void animate(FaceModelAnimator<S> animator, float partialTicks);
+	void animate(FaceModelAnimator<S> animator, S state, float partialTicks);
 }
+

@@ -50,7 +50,8 @@ public class FaceModelAnimator<S extends NvHumanoidRenderState> {
 		
 		registerAnimation(new BlinkAnimation<>());
 		registerAnimation(new IrisMoveAnimation<>());
-		registerAnimation(new AhegaoAnimation<>());
+		registerAnimation(new PanicAnimation<>());
+//		registerAnimation(new AhegaoAnimation<>());
 	}
 	
 	public Iterable<FacePartModel> getAllParts() {
@@ -69,7 +70,7 @@ public class FaceModelAnimator<S extends NvHumanoidRenderState> {
 	public void update(S state) {
 		resetTargets();
 		for (IFaceModelAnimation<S> anim : activeAnimations)
-			anim.animate(this, state.partialTick);
+			anim.animate(this, state, state.partialTick);
 		
 		commitToParts();
 		updateParts();

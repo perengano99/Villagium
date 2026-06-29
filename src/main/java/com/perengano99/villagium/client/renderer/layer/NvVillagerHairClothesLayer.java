@@ -6,6 +6,7 @@ import com.perengano99.villagium.client.renderer.entity.NvHumanoidRenderer;
 import com.perengano99.villagium.client.renderer.state.NvVillagerRenderState;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.Identifier;
+import com.perengano99.villagium.client.renderer.HslTextureBaker;
 
 public class NvVillagerHairClothesLayer extends NvHumanoidOverlayLayer<NvVillagerRenderState, NvVillagerModel<NvVillagerRenderState>> {
 	
@@ -23,7 +24,7 @@ public class NvVillagerHairClothesLayer extends NvHumanoidOverlayLayer<NvVillage
 	
 	@Override
 	protected Identifier getTextureLocation(NvVillagerRenderState state) {
-		return isHair ? state.hairTexture : state.clothesTexture;
+		return isHair ? HslTextureBaker.getBakedTexture(state.hairColor, state.hairTexture) : state.clothesTexture;
 	}
 	
 	private static BreastConfig getBreastConfig(boolean hair) {

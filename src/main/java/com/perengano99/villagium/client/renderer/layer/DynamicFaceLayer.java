@@ -29,9 +29,11 @@ public class DynamicFaceLayer<S extends NvHumanoidRenderState, M extends NvHuman
 		FaceModelAnimator<S> controller = (FaceModelAnimator<S>) state.faceModelController;
 		controller.update(state);
 		
+		ModelPart body = getParentModel().getBody();
 		ModelPart head = getParentModel().getHead();
 		
 		poseStack.pushPose();
+		body.translateAndRotate(poseStack);
 		head.translateAndRotate(poseStack);
 		// Colocamos el origen en el centro del frontal de la cara.
 		poseStack.translate(0.0F, -0.25F, -0.250625F);
@@ -62,7 +64,7 @@ public class DynamicFaceLayer<S extends NvHumanoidRenderState, M extends NvHuman
 	private RenderType getRenderType(S state, boolean forceTransparent) {
 		Identifier texture = state.faceTexture;
 		if (forceTransparent)
-			return RenderTypes.itemEntityTranslucentCull(texture);
-		return RenderTypes.entityCutoutNoCull(texture);
+			return RenderTypes.entityTranslucentCullItemTarget(texture);
+		return RenderTypes.entityCutoutCull(texture);
 	}
 }

@@ -31,7 +31,10 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
+import com.perengano99.villagium.data.NamesLoader;
+import net.neoforged.neoforge.event.AddServerReloadListenersEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.resources.Identifier;
 
 @Mod(Villagium.MODID)
 public class Villagium {
@@ -58,6 +61,7 @@ public class Villagium {
 		ModEntityTypes.register(modEventBus);
 		ModAttachments.register(modEventBus);
 		ModItems.register(modEventBus);
+		com.perengano99.villagium.social.event.SocialEventTypes.initialize();
 		
 		CREATIVE_MODE_TABS.register(modEventBus);
 		NeoForge.EVENT_BUS.register(this);
@@ -82,10 +86,26 @@ public class Villagium {
 		if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
 			//			event.accept(EXAMPLE_BLOCK_ITEM);
 		}
+		if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
+			event.accept(ModItems.NV_VILLAGER_MALE_SPAWN_EGG.get());
+			event.accept(ModItems.NV_VILLAGER_FEMALE_SPAWN_EGG.get());
+		}
 	}
 	
 	@SubscribeEvent
 	public void onServerStarting(ServerStartingEvent event) {
 		LOGGER.info("HELLO from server starting");
+	}
+
+	@SubscribeEvent
+	public void onAddReloadListener(AddServerReloadListenersEvent event) {
+		event.addListener(Identifier.fromNamespaceAndPath(MODID, "names_loader"), new NamesLoader());
+		event.addListener(Identifier.fromNamespaceAndPath(MODID, "tones_loader"), new com.perengano99.villagium.data.TonesLoader());
+		event.addListener(Identifier.fromNamespaceAndPath(MODID, "appearance_loader"), new com.perengano99.villagium.data.AppearanceLoader());
+		event.addListener(Identifier.fromNamespaceAndPath(MODID, "culture_loader"), new com.perengano99.villagium.data.CultureLoader());
+		event.addListener(Identifier.fromNamespaceAndPath(MODID, "dialogues_loader"), new com.perengano99.villagium.data.DialoguesLoader());
+		event.addListener(Identifier.fromNamespaceAndPath(MODID, "personalities_loader"), new com.perengano99.villagium.data.PersonalitiesLoader());
+		event.addListener(Identifier.fromNamespaceAndPath(MODID, "trait_loader"), new com.perengano99.villagium.data.TraitLoader());
+		event.addListener(Identifier.fromNamespaceAndPath(MODID, "social_event_loader"), new com.perengano99.villagium.data.SocialEventLoader());
 	}
 }

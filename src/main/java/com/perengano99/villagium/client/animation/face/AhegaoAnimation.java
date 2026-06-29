@@ -60,7 +60,7 @@ public class AhegaoAnimation<S extends NvHumanoidRenderState> implements IFaceMo
 	}
 	
 	@Override
-	public void animate(FaceModelAnimator<S> animator, float partialTicks) {
+	public void animate(FaceModelAnimator<S> animator, S state, float partialTicks) {
 		float lerpedIntensity = prevIntensity + (currentIntensity - prevIntensity) * partialTicks;
 		if (lerpedIntensity < 0.01f) return;
 		applyTransforms(animator, lerpedIntensity);

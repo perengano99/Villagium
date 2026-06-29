@@ -17,6 +17,8 @@ public class TempAnimManager {
 	// Usamos WeakHashMap para que si la entidad muere, el GC borre sus físicas.
 	private static final Map<LivingEntity, BreastSettings> CACHE = new WeakHashMap<>();
 	private static final Map<LivingEntity, FaceModelAnimator<?>> FACE_CACHE = new WeakHashMap<>();
+	private static final Map<LivingEntity, BakedAnimationHolder> BAKED_CACHE = new WeakHashMap<>();
+	private static final Map<LivingEntity, ModelAnimationController> ANIM_CACHE = new WeakHashMap<>();
 	
 	public static BreastSettings get(LivingEntity entity) {
 		return CACHE.computeIfAbsent(entity, k -> new BreastSettings());
@@ -24,6 +26,14 @@ public class TempAnimManager {
 	
 	public static FaceModelAnimator<?> getFaceController(LivingEntity entity) {
 		return FACE_CACHE.computeIfAbsent(entity, k -> new FaceModelAnimator<>());
+	}
+	
+	public static BakedAnimationHolder getBakedHolder(LivingEntity entity) {
+		return BAKED_CACHE.computeIfAbsent(entity, k -> new BakedAnimationHolder());
+	}
+	
+	public static ModelAnimationController getAnimationController(LivingEntity entity) {
+		return ANIM_CACHE.computeIfAbsent(entity, k -> new ModelAnimationController(k));
 	}
 	
 	public static void tick(LivingEntity entity) {
@@ -39,6 +49,9 @@ public class TempAnimManager {
 		if (entity instanceof VillagiumMob<?>) {
 			FaceModelAnimator<?> controller = getFaceController(entity);
 			controller.tick(entity.level().getGameTime());
+			
+			ModelAnimationController animController = getAnimationController(entity);
+			animController.tick();
 		}
 	}
 }

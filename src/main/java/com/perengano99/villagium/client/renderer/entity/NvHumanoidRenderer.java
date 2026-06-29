@@ -1,6 +1,9 @@
 package com.perengano99.villagium.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.perengano99.villagium.client.animation.ActiveAnimationRenderState;
+import com.perengano99.villagium.client.animation.AnimationCategory;
+import com.perengano99.villagium.client.animation.ModelAnimationController;
 import com.perengano99.villagium.client.model.parts.BreastModel;
 import com.perengano99.villagium.client.animation.TempAnimManager;
 import com.perengano99.villagium.client.model.NvHumanoidModel;
@@ -10,6 +13,7 @@ import com.perengano99.villagium.client.renderer.state.BreastPhysicsState;
 import com.perengano99.villagium.client.renderer.state.NvHumanoidRenderState;
 import com.perengano99.villagium.core.registration.ModAttachments;
 import com.perengano99.villagium.entity.VillagiumMob;
+import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -17,7 +21,8 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.rendertype.RenderType;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.world.entity.AnimationState;
 import org.jspecify.annotations.NonNull;
 
 public abstract class NvHumanoidRenderer<T extends VillagiumMob<T>, S extends NvHumanoidRenderState, M extends NvHumanoidModel<S>> extends MobRenderer<T, S, M> {
@@ -34,8 +39,9 @@ public abstract class NvHumanoidRenderer<T extends VillagiumMob<T>, S extends Nv
 	
 	protected abstract BreastModelRenderer.BreastBox rightBreastBox();
 	
+	
 	@Override
-	public void submit(S state, @NonNull PoseStack poseStack, @NonNull SubmitNodeCollector submitNodeCollector, @NonNull CameraRenderState camera) {
+	public void submit(@NonNull S state, @NonNull PoseStack poseStack, @NonNull SubmitNodeCollector submitNodeCollector, @NonNull CameraRenderState camera) {
 		model.setupAnim(state);
 		super.submit(state, poseStack, submitNodeCollector, camera);
 	}
@@ -48,12 +54,41 @@ public abstract class NvHumanoidRenderer<T extends VillagiumMob<T>, S extends Nv
 	@Override
 	public void extractRenderState(T entity, S state, float partialTicks) {
 		state.faceModelController = TempAnimManager.getFaceController(entity);
+		state.bakedAnimationHolder = TempAnimManager.getBakedHolder(entity);
 		
 		state.gameTime    = entity.level().getGameTime();
 		state.levelRandom = entity.level().getRandom();
+		state.entityId    = entity.getId();
 		
-		state.idleAnimState.copyFrom(entity.idleAnimState);
+		state.isPanicking = entity.isPanicking();
+		state.isRunning   = entity.isRunning();
 		
+		long uniqueTime   = state.gameTime + ((long) state.entityId * 100L);
+		state.useAltIdle  = (uniqueTime / 160) % 2 == 0;
+		
+		state.activeTriggerId = entity.getActiveTriggerId();
+		
+		state.activeAnimations.clear();
+		ModelAnimationController animController = TempAnimManager.getAnimationController(entity);
+		animController.getActiveAnimations().forEach((category, active) -> {
+			AnimationDefinition def = active.getCurrentDefinition();
+			if (def != null) {
+				AnimationState copyState = new AnimationState();
+				copyState.copyFrom(active.getState());
+				
+				state.activeAnimations.add(new ActiveAnimationRenderState(
+					active.getAnimation().getId() + "_" + active.getPhase().name().toLowerCase(),
+					def,
+					copyState,
+					active.getPhaseTicksElapsed(),
+					active.getAnimation().isWalkAnimation() && !(active.isManual() && active.getAnimation().getCategory() == AnimationCategory.MOVEMENT),
+					active.getAnimation().cancelsBaseWalk(),
+					active.getAnimation().getCategory(),
+					active.isManual(),
+					active.getSpeedFactor()
+				));
+			}
+		});
 		
 		// Pechos
 		var physicsState = entity.getData(ModAttachments.BREAST_PHYSICS);

@@ -43,7 +43,7 @@ public class BlinkAnimation<S extends NvHumanoidRenderState> implements IFaceMod
 	}
 	
 	@Override
-	public void animate(FaceModelAnimator<S> animator, float partialTicks) {
+	public void animate(FaceModelAnimator<S> animator, S state, float partialTicks) {
 		if (!inProgress && currentScaleY == 1.0f) return;
 		
 		// Interpolación real usando valores previos y partialTicks

@@ -11,7 +11,9 @@ import org.jspecify.annotations.NonNull;
 
 public record PingPongPacket() implements IPayloadPacket<PingPongPacket> {
 	
-	public PingPongPacket(FriendlyByteBuf buffer) {this();}
+	public PingPongPacket(FriendlyByteBuf buffer) {
+		this();
+	}
 	
 	@Override
 	public void encode(FriendlyByteBuf buffer) {
@@ -25,9 +27,8 @@ public record PingPongPacket() implements IPayloadPacket<PingPongPacket> {
 	@Override
 	public void handle(PingPongPacket payload, @NonNull IPayloadContext context) {
 		context.enqueueWork(() -> {
-			if (context.player() instanceof ServerPlayer player){
-				player.displayClientMessage(Component.literal("Pong!"), false);
-			}
+			if (context.player() instanceof ServerPlayer player)
+				player.sendSystemMessage(Component.literal("Pong!"));
 		});
 	}
 }

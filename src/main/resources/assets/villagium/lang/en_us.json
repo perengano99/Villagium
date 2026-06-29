@@ -25,5 +25,7 @@
   "dialogue.villagium.gentle.hobbies.response2": "Tending to my small garden brings me joy.",
   "dialogue.villagium.gentle.ask_how_feeling.response1": "I'm doing quite well, thank you for asking!",
   "dialogue.villagium.gentle.ask_how_feeling.response2": "Feeling rather content today, the sun is lovely.",
-  "dialogue.villagium.gentle.fallback.response1": "Hmm, I'm not sure what to say to that."
+  "dialogue.villagium.gentle.fallback.response1": "Hmm, I'm not sure what to say to that.",
+  "item.villagium.nv_villager_male_spawn_egg": "Male Villager Spawn Egg",
+  "item.villagium.nv_villager_female_spawn_egg": "Female Villager Spawn Egg"
 }

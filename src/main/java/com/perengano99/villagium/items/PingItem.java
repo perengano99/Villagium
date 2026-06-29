@@ -20,12 +20,11 @@ public class PingItem extends Item {
 	@Override
 	public @NonNull InteractionResult interactLivingEntity(@NotNull ItemStack stack, @NotNull Player player, @NotNull LivingEntity interactionTarget,
 	                                                       @NotNull InteractionHand hand) {
-		if (player.level().isClientSide()){
+		if (player.level().isClientSide()) {
 			NetworkManager.PIPELINE.sendToServer(new PingPongPacket());
-			return  InteractionResult.SUCCESS;
-		} else {
-			player.displayClientMessage(player.getDisplayName(), true);
-		}
+			return InteractionResult.SUCCESS;
+		} else
+			player.sendSystemMessage(player.getDisplayName());
 		return InteractionResult.PASS;
 	}
 }

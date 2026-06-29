@@ -6,6 +6,9 @@ import com.perengano99.villagium.client.animation.TempAnimManager;
 import com.perengano99.villagium.client.renderer.entity.NvVillagerRenderer;
 import com.perengano99.villagium.core.registration.ModEntityTypes;
 import com.perengano99.villagium.core.util.logging.Logger;
+import com.perengano99.villagium.network.NetworkManager;
+import com.perengano99.villagium.network.SharedAnimationData;
+import com.perengano99.villagium.network.packets.SyncRegisteredAnimationsToServerPacket;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,10 +18,13 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.AddClientReloadListenersEvent;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+
+import net.neoforged.bus.api.IEventBus;
 
 @EventBusSubscriber(modid = Villagium.MODID, value = Dist.CLIENT)
 public final class VillagiumClient {
@@ -26,12 +32,9 @@ public final class VillagiumClient {
 	private static final Logger LOGGER = Logger.getLogger();
 	
 	private static final ResourcesReloadListener RELOAD_LISTENER = new ResourcesReloadListener();
+	private static final com.perengano99.villagium.data.TonesLoader TONES_LOADER = new com.perengano99.villagium.data.TonesLoader();
+	private static final com.perengano99.villagium.data.AppearanceLoader APPEARANCE_LOADER = new com.perengano99.villagium.data.AppearanceLoader();
 	
-	public VillagiumClient(ModContainer container) {
-		container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
-	}
-	
-	@SubscribeEvent
 	public static void onClientSetup(final FMLClientSetupEvent event) {
 		LOGGER.info("HELLO FROM CLIENT SETUP");
 		LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
@@ -53,6 +56,8 @@ public final class VillagiumClient {
 	@SubscribeEvent
 	public static void onRegisterClientReloadListeners(AddClientReloadListenersEvent event) {
 		event.addListener(Identifier.fromNamespaceAndPath(Villagium.MODID, "mod_reload_listener"), RELOAD_LISTENER);
+		event.addListener(Identifier.fromNamespaceAndPath(Villagium.MODID, "tones_loader"), TONES_LOADER);
+		event.addListener(Identifier.fromNamespaceAndPath(Villagium.MODID, "appearance_loader"), APPEARANCE_LOADER);
 	}
 	
 	@SubscribeEvent
@@ -67,5 +72,11 @@ public final class VillagiumClient {
 				TempAnimManager.tick(living);
 			}
 		});
+	}
+	
+	@SubscribeEvent
+	public static void onClientLogin(ClientPlayerNetworkEvent.LoggingIn event) {
+		LOGGER.info("Client connected. Syncing animations list to server...");
+		NetworkManager.PIPELINE.sendToServer(new SyncRegisteredAnimationsToServerPacket(SharedAnimationData.getEntries()));
 	}
 }

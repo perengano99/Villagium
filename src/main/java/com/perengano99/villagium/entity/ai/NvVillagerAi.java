@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import com.mojang.datafixers.util.Pair;
 import com.perengano99.villagium.entity.npc.NvVillager;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.ai.behavior.*;
 import net.minecraft.world.entity.schedule.Activity;
 
@@ -28,12 +28,12 @@ public class NvVillagerAi extends VillagiumMobAi<NvVillager> {
 				Pair.of(1, new MoveToTargetSink())));
 		
 		map.put(Activity.IDLE, Lists.newArrayList(
-				Pair.of(1, SetEntityLookTarget.create(EntityType.PLAYER, 6)),
+				Pair.of(1, SetEntityLookTarget.create(EntityTypes.PLAYER, 6)),
 				Pair.of(2, new RunOne<>(
 						ImmutableList.of(
-								Pair.of(RandomStroll.stroll(0.5f), 2),
+								Pair.of(RandomStroll.stroll(1), 2),
 								Pair.of(new RandomLookAround(UniformInt.of(150, 250), 70, 0, 0), 3),
-								Pair.of(SetWalkTargetFromLookTarget.create(0.5f, 2), 2),
+								Pair.of(SetWalkTargetFromLookTarget.create(1, 2), 2),
 								Pair.of(new DoNothing(20, 60), 4))))));
 		
 		return map;

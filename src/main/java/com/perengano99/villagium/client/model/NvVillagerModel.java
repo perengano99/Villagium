@@ -2,7 +2,9 @@ package com.perengano99.villagium.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.perengano99.villagium.Villagium;
-import com.perengano99.villagium.client.animation.definitions.HumanoidAnimation;
+import com.perengano99.villagium.client.animation.ActiveAnimationRenderState;
+import com.perengano99.villagium.client.animation.BakedAnimationHolder;
+import com.perengano99.villagium.client.animation.definitions.villager.VillagerMovementLegsAnimation;
 import com.perengano99.villagium.client.renderer.state.NvVillagerRenderState;
 import net.minecraft.client.animation.KeyframeAnimation;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -13,22 +15,17 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.HumanoidArm;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class NvVillagerModel<T extends NvVillagerRenderState> extends NvHumanoidModel<T> {
 	
 	public static final ModelLayerLocation BODY_LAYER = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Villagium.MODID, "villager_body"), "body");
 	public static final ModelLayerLocation CLOTHES_LAYER = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Villagium.MODID, "villager_clothes"), "clothes");
 	public static final ModelLayerLocation HAIR_LAYER = new ModelLayerLocation(Identifier.fromNamespaceAndPath(Villagium.MODID, "villager_hair"), "hair");
-	
-	private final KeyframeAnimation idleAnim;
-	private final KeyframeAnimation walkAnim;
-	private final KeyframeAnimation fWalkUpperAnim;
+	private final BakedAnimationHolder bakedAnimationHolder = new BakedAnimationHolder();
 	
 	public NvVillagerModel(ModelPart root) {
 		super(root);
-		idleAnim       = HumanoidAnimation.IDLE.bake(root);
-		walkAnim       = HumanoidAnimation.WALK_LOWER.bake(root);
-		fWalkUpperAnim = HumanoidAnimation.WALK_FEMALE_UPPER.bake(root);
 	}
 	
 	public static @NotNull LayerDefinition createBodyLayer() {
@@ -57,15 +54,15 @@ public class NvVillagerModel<T extends NvVillagerRenderState> extends NvHumanoid
 	private static @NotNull PartDefinition createLayer(@NotNull PartDefinition partdefinition, boolean ov, boolean head, int hX, int hY, int bX, int bY, int rAX, int rAY, int lAX
 			, int lAY, int rLX, int rLY, int lLX, int lLY, CubeDeformation deform) {
 		
-		// Cabeza (8x8 en UV, como en Minecraft)
-		partdefinition.addOrReplaceChild(ov ? KEY_HEAD_OV : KEY_HEAD,
-				head ? CubeListBuilder.create().texOffs(hX, hY).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, deform) : CubeListBuilder.create(),
-				PartPose.ZERO);
-		
 		// Cuerpo (8x12 en UV)
 		PartDefinition bodyDef = partdefinition.addOrReplaceChild(ov ? KEY_BODY_OV : KEY_BODY,
 				CubeListBuilder.create().texOffs(bX, bY).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 12.0F, 4.0F, deform),
 				PartPose.offset(0.0F, 0.0F, 0.0F));
+		
+		// Cabeza (8x8 en UV, como en Minecraft)
+		bodyDef.addOrReplaceChild(ov ? KEY_HEAD_OV : KEY_HEAD,
+				head ? CubeListBuilder.create().texOffs(hX, hY).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, deform) : CubeListBuilder.create(),
+				PartPose.ZERO);
 		
 		// Brazos (4x12 en UV)
 		bodyDef.addOrReplaceChild(ov ? KEY_RIGHT_ARM_OV : KEY_RIGHT_ARM, CubeListBuilder.create().texOffs(rAX, rAY).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, deform),
@@ -83,18 +80,46 @@ public class NvVillagerModel<T extends NvVillagerRenderState> extends NvHumanoid
 	}
 	
 	@Override
-	protected void animate(T state) {
-		
-		// Esta configurado para que siempre lo sea en este momento.
-		walkAnim.applyWalk(state.walkAnimationPos, state.walkAnimationSpeed, 1, 1);
-		if (state.isFemale) {
-			fWalkUpperAnim.applyWalk(state.walkAnimationPos, state.walkAnimationSpeed, 1, 1);
-			idleAnim.apply(state.idleAnimState, state.ageInTicks);
+	protected void animateLegs(T state, @Nullable ActiveAnimationRenderState manualState) {
+		KeyframeAnimation movement = state.bakedAnimationHolder.getBaked("villager_movement_legs", VillagerMovementLegsAnimation.DEFINITION, root);
+		if (movement != null) {
+			if (manualState != null)
+				movement.apply(manualState.state(), state.ageInTicks, manualState.speedFactor());
+			else
+				movement.applyWalk(state.walkAnimationPos, state.walkAnimationSpeed, 1.0f, 1.0f);
 		}
 	}
 	
 	@Override
-	public void translateToHand(T t, HumanoidArm humanoidArm, PoseStack poseStack) {
+	protected void animate(T state) {
+		//		boolean cancelWalk = false;
+		//		ActiveAnimationRenderState manualMovement = null;
+		//
+		//		for (ActiveAnimationRenderState active : state.activeAnimations) {
+		//			if (active.cancelsBaseWalk())
+		//				cancelWalk = true;
+		//			if (active.category() == AnimationCategory.MOVEMENT && active.isManual())
+		//				manualMovement = active;
+		//		}
+		//
+		//		if (!cancelWalk) {
+		//			net.minecraft.client.animation.KeyframeAnimation walkLower = state.bakedAnimationHolder.getBaked(
+		//					"movement_legs",
+		//					MovementLegsAnimation.DEFINITION,
+		//					this.root);
+		//			if (walkLower != null) {
+		//				if (manualMovement != null)
+		//					walkLower.apply(manualMovement.state(), state.ageInTicks, manualMovement.speedFactor());
+		//				else
+		//					walkLower.applyWalk(state.walkAnimationPos, state.walkAnimationSpeed, 1.0f, 1.0f);
+		//			}
+		//		}
+	}
 	
+	@Override
+	public void translateToHand(T state, HumanoidArm arm, PoseStack poseStack) {
+		this.body.translateAndRotate(poseStack);
+		ModelPart armPart = arm == HumanoidArm.RIGHT ? this.rightArm : this.leftArm;
+		armPart.translateAndRotate(poseStack);
 	}
 }

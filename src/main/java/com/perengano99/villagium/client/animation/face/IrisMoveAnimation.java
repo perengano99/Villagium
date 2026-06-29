@@ -39,7 +39,7 @@ public class IrisMoveAnimation<S extends NvHumanoidRenderState> implements IFace
 	}
 	
 	@Override
-	public void animate(FaceModelAnimator<S> animator, float partialTicks) {
+	public void animate(FaceModelAnimator<S> animator, S state, float partialTicks) {
 		float lerpedX = prevX + (currentX - prevX) * partialTicks;
 		float lerpedY = prevY + (currentY - prevY) * partialTicks;
 		
