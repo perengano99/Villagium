@@ -11,10 +11,11 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public class ModItems {
+	
 	private static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Villagium.MODID);
 	
 	public static final DeferredItem<PingItem> PING_ITEM = ITEMS.registerItem("ping_item", PingItem::new);
-
+	
 	public static final DeferredItem<net.minecraft.world.item.SpawnEggItem> NV_VILLAGER_MALE_SPAWN_EGG = ITEMS.registerItem(
 			"nv_villager_male_spawn_egg",
 			properties -> {
@@ -30,8 +31,8 @@ public class ModItems {
 								.component(net.minecraft.core.component.DataComponents.ENTITY_DATA, entityData)
 				);
 			}
-	);
-
+	                                                                                                                       );
+	
 	public static final DeferredItem<net.minecraft.world.item.SpawnEggItem> NV_VILLAGER_FEMALE_SPAWN_EGG = ITEMS.registerItem(
 			"nv_villager_female_spawn_egg",
 			properties -> {
@@ -47,8 +48,10 @@ public class ModItems {
 								.component(net.minecraft.core.component.DataComponents.ENTITY_DATA, entityData)
 				);
 			}
-	);
+	                                                                                                                         );
 	
-	public static void register(IEventBus eventBus) {ITEMS.register(eventBus);}
+	public static void register(IEventBus eventBus) {
+		ITEMS.register(eventBus);
+	}
 }
 

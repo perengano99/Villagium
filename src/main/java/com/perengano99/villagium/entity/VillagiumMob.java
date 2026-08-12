@@ -158,6 +158,14 @@ public abstract class VillagiumMob<T extends VillagiumMob<T>> extends AgeableMob
 					manualAnimDuration = -1;
 				}
 			}
+			if (profile != null)
+				profile.tickRelationships();
+			
+			if (this.interactingPlayer != null)
+				if (!this.interactingPlayer.isAlive()
+						|| this.interactingPlayer.level() != this.level()
+						|| this.distanceToSqr(this.interactingPlayer) > 49.0D)
+					this.interactingPlayer = null;
 		} else
 			setupAnimationStates();
 	}
@@ -252,16 +260,13 @@ public abstract class VillagiumMob<T extends VillagiumMob<T>> extends AgeableMob
 		input.read("relationships", RelationshipData.CODEC.listOf()).ifPresent(list -> {
 			NvProfile prof = getOrCreateProfile();
 			prof.clearRelationships();
-			for (RelationshipData rel : list) {
-				RelationshipData resolvedRel = new RelationshipData(
-						rel.getTargetUuid(),
-						prof.getPersonality(),
-						rel.getAllValues(),
-						rel.getRelationshipTier(),
-						rel.getLastInteractionTime()
-				);
-				prof.setRelationship(resolvedRel);
-			}
+			for (RelationshipData rel : list)
+				prof.setRelationship(rel);
+		});
+		input.read("known_entities", net.minecraft.core.UUIDUtil.CODEC.listOf()).ifPresent(list -> {
+			NvProfile prof = getOrCreateProfile();
+			prof.getKnownEntities().clear();
+			prof.getKnownEntities().addAll(list);
 		});
 	}
 	
@@ -274,6 +279,7 @@ public abstract class VillagiumMob<T extends VillagiumMob<T>> extends AgeableMob
 		ProfileData data = getData(ModAttachments.PROFILE_DATA.get());
 		output.store("profile_data", ProfileData.CODEC.codec(), data);
 		output.store("relationships", RelationshipData.CODEC.listOf(), List.copyOf(getOrCreateProfile().getRelationships().values()));
+		output.store("known_entities", net.minecraft.core.UUIDUtil.CODEC.listOf(), List.copyOf(getOrCreateProfile().getKnownEntities()));
 	}
 	
 	public String getCuid() {

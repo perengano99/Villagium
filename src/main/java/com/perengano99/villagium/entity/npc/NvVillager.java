@@ -2,11 +2,24 @@ package com.perengano99.villagium.entity.npc;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.perengano99.villagium.Villagium;
 import com.perengano99.villagium.entity.VillagiumMob;
 import com.perengano99.villagium.entity.ai.NvVillagerAi;
+import com.perengano99.villagium.entity.interaction.MenuNpc;
+import com.perengano99.villagium.network.NetworkManager;
+import com.perengano99.villagium.network.packets.S2C_OpenInteractMenuPacket;
+import com.perengano99.villagium.network.packets.server.OpenNpcMenuPacket;
+import com.perengano99.villagium.social.profile.NvProfile;
+import com.perengano99.villagium.social.relationship.RelationshipData;
+import net.minecraft.resources.Identifier;
+import java.util.List;
+import java.util.Map;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.profiling.Profiler;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.ActivityData;
@@ -17,6 +30,7 @@ import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.schedule.Activity;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -26,7 +40,7 @@ import org.jspecify.annotations.NonNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NvVillager extends VillagiumMob<NvVillager> {
+public class NvVillager extends VillagiumMob<NvVillager> implements MenuNpc {
 	
 	private static final List<MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(
 			MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET,
@@ -88,4 +102,43 @@ public class NvVillager extends VillagiumMob<NvVillager> {
 		profiler.pop();
 		super.customServerAiStep(level);
 	}
+	
+	@Override
+	public @NonNull InteractionResult mobInteract(Player player, @NonNull InteractionHand hand) {
+		if (player.isShiftKeyDown())
+			return super.mobInteract(player, hand);
+		
+		if (!level().isClientSide() && hand == InteractionHand.MAIN_HAND && player instanceof ServerPlayer serverPlayer) {
+			tryOpenMenu(this, serverPlayer);
+			//			if (canOpenMenu(player)) {
+			//				NvProfile prof = this.getOrCreateProfile();
+			//				RelationshipData rel = prof.getOrCreateRelationshipWith(player.getUUID());
+			//				String tagStr = rel.getPrimaryTag().getPath();
+			//
+			//				//				NetworkManager.PIPELINE.sendToClient(
+			//				//						serverPlayer,
+			//				//						new S2C_OpenInteractionScreenPacket(
+			//				//								this.getId(),
+			//				//								this.getDisplayName(),
+			//				//								tagStr
+			//				//						)
+			//				//				                                    );
+			//			}
+		}
+		return InteractionResult.SUCCESS;
+	}
+	
+	@Override
+	public <T extends VillagiumMob<T>> void tryOpenMenu(T source, Player player) {
+		if (!canOpenMenu(player))
+			return;
+		
+		if (player instanceof ServerPlayer sp) {
+			source.interactingPlayer = player;
+			RelationshipData relation = source.getOrCreateProfile().getRelationWith(player.getUUID());
+			RelationshipData.ClientData relationData = relation != null ? relation.toClientData() : new RelationshipData.ClientData(player.getUUID(), Map.of(), List.of(), Map.of(), Identifier.fromNamespaceAndPath(Villagium.MODID, "neutral"), null);
+			NetworkManager.PIPELINE.sendToClient(sp, new OpenNpcMenuPacket(source.getId(), source.getOrCreateProfile().getData(), relationData));
+		}
+	}
 }
+

@@ -43,9 +43,7 @@ public class DynamicFaceLayer<S extends NvHumanoidRenderState, M extends NvHuman
 		RenderType renderType = getRenderType(state, forceTransparent);
 		
 		for (FacePartModel part : controller.getAllParts()) {
-			int color = 0xFFFFFF;
-			if (part == controller.leftIris || part == controller.rightIris)
-				color = state.irisColor;
+			int color = part.isIrisTinted ? (0xFF000000 | state.irisColor) : 0xFFFFFFFF;
 			render(part, poseStack, submitNodeCollector, renderType, light, overlay, color, state.partialTick);
 		}
 		poseStack.popPose();

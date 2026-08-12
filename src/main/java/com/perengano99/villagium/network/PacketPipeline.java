@@ -21,6 +21,7 @@ import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.util.Objects;
 
 public class PacketPipeline {
@@ -48,17 +49,36 @@ public class PacketPipeline {
 		PacketDistributor.sendToPlayersTrackingEntity(target, packet);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public <T extends IPayloadPacket<T>> void registerToPacket(Class<T> clazz, Dist dist) {
 		if (payload == null) throw new IllegalStateException("PayloadRegistrar has not been loaded. Call loadRegistrar() first.");
 		
-		final StreamDecoder<FriendlyByteBuf, T> packetDecoder = getByteBufTStreamDecoder(clazz);
-		final StreamMemberEncoder<FriendlyByteBuf, T> packetEncoder = IPayloadPacket::encode;
+		StreamCodec<? super FriendlyByteBuf, T> streamCodec = null;
+		try {
+			final Field field = clazz.getDeclaredField("STREAM_CODEC");
+			streamCodec = (StreamCodec<? super FriendlyByteBuf, T>) field.get(null);
+		} catch (NoSuchFieldException | IllegalAccessException e) {
+			// Fallback to legacy reflection constructor
+		}
+
+		if (streamCodec == null) {
+			final StreamDecoder<FriendlyByteBuf, T> packetDecoder = getByteBufTStreamDecoder(clazz);
+			final StreamMemberEncoder<FriendlyByteBuf, T> packetEncoder = IPayloadPacket::encode;
+			streamCodec = StreamCodec.ofMember(packetEncoder, packetDecoder);
+		}
+		
+		registerToPacket(clazz, streamCodec, dist);
+	}
+
+	public <T extends IPayloadPacket<T>> void registerToPacket(Class<T> clazz, StreamCodec<? super FriendlyByteBuf, T> streamCodec, Dist dist) {
+		if (payload == null) throw new IllegalStateException("PayloadRegistrar has not been loaded. Call loadRegistrar() first.");
+		
 		final IPayloadHandler<T> packetHandler = (packetInstance, context) -> packetInstance.handle(packetInstance, context);
 		
 		if (dist.isClient())
-			payload.playToClient(NetworkManager.getPacketType(clazz), StreamCodec.ofMember(packetEncoder, packetDecoder), packetHandler);
+			payload.playToClient(NetworkManager.getPacketType(clazz), streamCodec, packetHandler);
 		else
-			payload.playToServer(NetworkManager.getPacketType(clazz), StreamCodec.ofMember(packetEncoder, packetDecoder), packetHandler);
+			payload.playToServer(NetworkManager.getPacketType(clazz), streamCodec, packetHandler);
 	}
 	
 	private static <T extends IPayloadPacket<T>> @NotNull StreamDecoder<FriendlyByteBuf, T> getByteBufTStreamDecoder(Class<T> clazz) {

@@ -194,8 +194,3 @@ java {
         vendor = JvmVendorSpec.AZUL
     }
 }
-
-
-
-
-

@@ -43,8 +43,8 @@ public class FaceModelAnimator<S extends NvHumanoidRenderState> {
 		leftEyebrow  = new FacePartModel(new Vector3f(-3.6f, -0.6f, -.001f), 0, 3, 4, 2, 0.7f, 0.6f);
 		rightEyebrow = new FacePartModel(new Vector3f(0.6f, -0.6f, -.001f), 4, 3, 4, 2, 0.7f, 0.6f);
 		
-		leftIris  = new FacePartModel(new Vector3f(-2.2f, 0.1f, -0.0009f), 9, 0, 2, 2, 0.45f, 0.65f);
-		rightIris = new FacePartModel(new Vector3f(1.2f, 0.1f, -0.0009f), 12, 0, 2, 2, 0.45f, 0.65f);
+		leftIris  = new FacePartModel(new Vector3f(-2.2f, 0.1f, -0.0009f), 9, 0, 2, 2, 0.45f, 0.65f, true);
+		rightIris = new FacePartModel(new Vector3f(1.2f, 0.1f, -0.0009f), 12, 0, 2, 2, 0.45f, 0.65f, true);
 		
 		this.allParts = List.of(leftEyelid, rightEyelid, leftEyebrow, rightEyebrow, leftIris, rightIris);
 		
@@ -60,6 +60,14 @@ public class FaceModelAnimator<S extends NvHumanoidRenderState> {
 	
 	public void registerAnimation(IFaceModelAnimation<S> animation) {
 		this.activeAnimations.add(animation);
+	}
+	
+	public void removeAnimation(IFaceModelAnimation<S> animation) {
+		this.activeAnimations.remove(animation);
+	}
+	
+	public void clearAnimations() {
+		this.activeAnimations.clear();
 	}
 	
 	public void tick(long gameTime) {
