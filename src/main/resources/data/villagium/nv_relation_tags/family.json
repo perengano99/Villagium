@@ -1,0 +1,12 @@
+{
+  "id": "villagium:family",
+  "priority": 90,
+  "base_weight": 50,
+  "reception_modifier": 15,
+  "conditions": {
+    "trust": { "min": 40.0 }
+  },
+  "required_known": true,
+  "display_key": "relation_tag.villagium.family",
+  "display_color": "#55ffff"
+}

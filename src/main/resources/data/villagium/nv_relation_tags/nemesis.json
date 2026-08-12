@@ -1,0 +1,14 @@
+{
+  "id": "villagium:nemesis",
+  "priority": 80,
+  "base_weight": 80,
+  "reception_modifier": -30,
+  "conditions": {
+    "resentment": { "min": 70.0 },
+    "friendship": { "max": -50.0 },
+    "trust": { "max": -30.0 }
+  },
+  "required_known": true,
+  "display_key": "relation_tag.villagium.nemesis",
+  "display_color": "#aa0000"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "villagium:asocial",
+  "display_key": "trait.villagium.asocial.name",
+  "description_key": "trait.villagium.asocial.desc",
+  "modifiers": [
+    {
+      "type": "villagium:reception_score",
+      "category_scores": {
+        "social": -15,
+        "personal": -25
+      }
+    }
+  ]
+}

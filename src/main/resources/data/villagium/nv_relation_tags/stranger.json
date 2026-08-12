@@ -1,0 +1,9 @@
+{
+  "id": "villagium:stranger",
+  "priority": 0,
+  "base_weight": 1,
+  "reception_modifier": 0,
+  "required_known": false,
+  "display_key": "relation_tag.villagium.stranger",
+  "display_color": "#ffffff"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "villagium:submissive",
+  "priority": 55,
+  "base_weight": 55,
+  "reception_modifier": 5,
+  "conditions": {
+    "fear": { "min": 40.0 },
+    "friendship": { "min": 20.0 }
+  },
+  "required_known": true,
+  "display_key": "relation_tag.villagium.submissive",
+  "display_color": "#e0b0ff"
+}

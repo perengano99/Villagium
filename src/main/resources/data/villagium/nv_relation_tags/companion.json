@@ -1,0 +1,13 @@
+{
+  "id": "villagium:companion",
+  "priority": 50,
+  "base_weight": 45,
+  "reception_modifier": 10,
+  "conditions": {
+    "friendship": { "min": 50.0 },
+    "trust": { "min": 40.0 }
+  },
+  "required_known": true,
+  "display_key": "relation_tag.villagium.companion",
+  "display_color": "#00aa00"
+}

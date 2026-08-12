@@ -1,0 +1,18 @@
+{
+  "id": "villagium:rival",
+  "priority": 65,
+  "base_weight": 65,
+  "reception_modifier": -10,
+  "conditions_or": [
+    {
+      "envy": { "min": 50.0 }
+    },
+    {
+      "political_alignment": { "max": -50.0 },
+      "friendship": { "max": -20.0 }
+    }
+  ],
+  "required_known": true,
+  "display_key": "relation_tag.villagium.rival",
+  "display_color": "#ffaa00"
+}

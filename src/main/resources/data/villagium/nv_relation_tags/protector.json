@@ -1,0 +1,13 @@
+{
+  "id": "villagium:protector",
+  "priority": 58,
+  "base_weight": 55,
+  "reception_modifier": 10,
+  "conditions": {
+    "trust": { "min": 60.0 },
+    "respect": { "min": 50.0 }
+  },
+  "required_known": true,
+  "display_key": "relation_tag.villagium.protector",
+  "display_color": "#5555ff"
+}

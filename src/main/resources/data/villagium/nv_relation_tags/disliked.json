@@ -1,0 +1,12 @@
+{
+  "id": "villagium:disliked",
+  "priority": 35,
+  "base_weight": 35,
+  "reception_modifier": -15,
+  "conditions": {
+    "friendship": { "max": -20.0 }
+  },
+  "required_known": true,
+  "display_key": "relation_tag.villagium.disliked",
+  "display_color": "#ff5555"
+}

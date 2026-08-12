@@ -1,0 +1,13 @@
+{
+  "id": "villagium:lover",
+  "priority": 75,
+  "base_weight": 75,
+  "reception_modifier": 20,
+  "conditions": {
+    "love": { "min": 60.0 },
+    "trust": { "min": 30.0 }
+  },
+  "required_known": true,
+  "display_key": "relation_tag.villagium.lover",
+  "display_color": "#ff55ff"
+}

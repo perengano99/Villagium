@@ -1,0 +1,13 @@
+{
+  "id": "villagium:best_friend",
+  "priority": 70,
+  "base_weight": 70,
+  "reception_modifier": 20,
+  "conditions": {
+    "friendship": { "min": 75.0 },
+    "trust": { "min": 50.0 }
+  },
+  "required_known": true,
+  "display_key": "relation_tag.villagium.best_friend",
+  "display_color": "#55ff55"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "villagium:spouse",
+  "priority": 100,
+  "base_weight": 100,
+  "reception_modifier": 30,
+  "conditions": {
+    "love": { "min": 90.0 },
+    "trust": { "min": 80.0 }
+  },
+  "required_known": true,
+  "display_key": "relation_tag.villagium.spouse",
+  "display_color": "#ff00ff"
+}

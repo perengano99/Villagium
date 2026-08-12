@@ -1,0 +1,26 @@
+{
+  "moods": [
+    {
+      "id": "neutral",
+      "display_key": "mood.neutral",
+      "display_color": "#020202",
+      "display": true
+    }, {
+      "id": "happy",
+      "display_key": "mood.happy",
+      "display_color": "#ffcc00"
+    }, {
+      "id": "content",
+      "display_key": "mood.content",
+      "display_color": "#55ffff"
+    }, {
+      "id": "sad",
+      "display_key": "mood.sad",
+      "display_color": "#5555ff"
+    }, {
+      "id": "angry",
+      "display_key": "mood.angry",
+      "display_color": "#ff5555"
+    }
+  ]
+}

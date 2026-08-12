@@ -1,0 +1,48 @@
+{
+  "textures": [
+    "villagium:friendship_high_positive",
+    "villagium:friendship_positive",
+    "villagium:friendship_negative",
+    "villagium:friendship_high_negative",
+
+    "villagium:trust_high_positive",
+    "villagium:trust_positive",
+    "villagium:trust_negative",
+    "villagium:trust_high_negative",
+
+    "villagium:love_high_positive",
+    "villagium:love_positive",
+    "villagium:love_negative",
+    "villagium:love_high_negative",
+
+    "villagium:political_high_positive",
+    "villagium:political_positive",
+    "villagium:political_negative",
+    "villagium:political_high_negative",
+
+    "villagium:resentment_high_positive",
+    "villagium:resentment_positive",
+    "villagium:resentment_negative",
+    "villagium:resentment_high_negative",
+
+    "villagium:respect_high_positive",
+    "villagium:respect_positive",
+    "villagium:respect_negative",
+    "villagium:respect_high_negative",
+
+    "villagium:empathy_high_positive",
+    "villagium:empathy_positive",
+    "villagium:empathy_negative",
+    "villagium:empathy_high_negative",
+
+    "villagium:envy_high_positive",
+    "villagium:envy_positive",
+    "villagium:envy_negative",
+    "villagium:envy_high_negative",
+
+    "villagium:fear_high_positive",
+    "villagium:fear_positive",
+    "villagium:fear_negative",
+    "villagium:fear_high_negative"
+  ]
+}

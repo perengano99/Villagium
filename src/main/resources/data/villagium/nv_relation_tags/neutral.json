@@ -1,0 +1,9 @@
+{
+  "id": "villagium:neutral",
+  "priority": 10,
+  "base_weight": 1,
+  "reception_modifier": 0,
+  "required_known": true,
+  "display_key": "relation_tag.villagium.neutral",
+  "display_color": "#aaaaaa"
+}

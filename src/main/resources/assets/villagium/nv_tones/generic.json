@@ -1,0 +1,28 @@
+{
+  "colors": [
+    {
+      "skin": "0xFFDAB8",
+      "hair": "0x8B4513",
+      "eye": "0x5C4033",
+      "weight": 10
+    },
+    {
+      "skin": "0xC79A6D",
+      "hair": "0x3D2314",
+      "eye": "0x3D2314",
+      "weight": 10
+    },
+    {
+      "skin": "0xF5EAE6",
+      "hair": "0xB85B4D",
+      "eye": "0x789A5B",
+      "weight": 5
+    },
+    {
+      "skin": "0x9A8B52",
+      "hair": "0xE0E0E0",
+      "eye": "0x5B9A8F",
+      "weight": 1
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "method": "MERGE",
+  "male": [
+    "Aldous", "Balian", "Cedric", "Dorian", "Elian",
+    "Finn", "Garrick", "Hal", "Ivar", "Jace",
+    "Kael", "Lorian", "Milo", "Nycolas", "Orin",
+    "Perrin", "Quinn", "Rowan", "Silas", "Thales",
+    "Uri", "Vane", "Willem", "Xander", "Yorick",
+    "Zane", "Alaric", "Brom", "Corin", "Darian",
+    "Eamon", "Faelan", "Gideon", "Hektor", "Jory",
+    "Kaelen", "Leif", "Merek", "Nevan", "Oric",
+    "Pyke", "Rian", "Soren", "Torin", "Ulric",
+    "Valen", "Wynn", "Yoseth", "Zev", "Arthur"
+  ],
+  "female": [
+    "Ada", "Beryl", "Calla", "Dalia", "Elara",
+    "Freya", "Greta", "Hilda", "Isla", "Jora",
+    "Kaelia", "Lyra", "Maeve", "Nola", "Osha",
+    "Piper", "Runa", "Sybil", "Tessa", "Una",
+    "Veda", "Willa", "Xena", "Yara", "Zara",
+    "Alma", "Brisa", "Cora", "Delia", "Eira",
+    "Fia", "Gwen", "Hera", "Idony", "Juna",
+    "Kira", "Leta", "Mina", "Nia", "Orla",
+    "Petra", "Qiana", "Risa", "Sena", "Tara",
+    "Ula", "Vesper", "Wren", "Ylva", "Zella"
+  ],
+  "bisexual": [
+    "Artis", "Ash", "Aubin", "Bael", "Blair",
+    "Bryn", "Cass", "Ciel", "Cleo", "Dale",
+    "Dara", "Eden", "Ellis", "Ember", "Erin",
+    "Evren", "Fen", "Flor", "Gael", "Gale",
+    "Garnet", "Glen", "Haven", "Ira", "Jael",
+    "Jean", "Joss", "Kestrel", "Laine", "Lior",
+    "Luce", "Mael", "Mar", "Merle", "Nova",
+    "Nyx", "Ori", "Paz", "Pen", "Rae",
+    "Remy", "Ren", "Rey", "River", "Robin",
+    "Rune", "Sage", "Shay", "Sol", "Val"
+  ]
+}

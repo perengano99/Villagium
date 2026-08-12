@@ -1,0 +1,13 @@
+{
+  "id": "villagium:envious_rival",
+  "priority": 68,
+  "base_weight": 60,
+  "reception_modifier": -15,
+  "conditions": {
+    "envy": { "min": 70.0 },
+    "friendship": { "max": -10.0 }
+  },
+  "required_known": true,
+  "display_key": "relation_tag.villagium.envious_rival",
+  "display_color": "#ffaa00"
+}

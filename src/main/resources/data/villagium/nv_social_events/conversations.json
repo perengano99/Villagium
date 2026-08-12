@@ -1,0 +1,390 @@
+{
+  "events": [
+    {
+      "id": "villagium:short_topic.weather",
+      "type": "villagium:conversation",
+      "display_key": "villagium.topic.weather",
+      "icon": "minecraft:clock",
+      "categories": [
+        "neutral", "light", "nature", "slice_of_life"
+      ],
+      "base_impact": 50,
+      "affinity_impact": {
+        "FRIENDSHIP": 1.0
+      },
+      "conversation_config": {
+        "start_node": "intro",
+        "nodes": {
+          "intro": {
+            "id": "intro",
+            "lines": [
+              {
+                "keys": ["dialogue.villagium.weather.sunny_happy"],
+                "conditions": { "mood": "happy" }
+              },
+              {
+                "keys": ["dialogue.villagium.weather.sunny_generic"]
+              }
+            ],
+            "choices": [
+              {
+                "text": "dialogue.villagium.choice.agree",
+                "next_node": "friendly_end",
+                "relationship_effects": { "FRIENDSHIP": 2.0 },
+                "fatigue_cost": 5.0
+              },
+              {
+                "text": "dialogue.villagium.choice.disagree",
+                "next_node": "bad_end",
+                "relationship_effects": { "FRIENDSHIP": -1.5 },
+                "force_mood": "angry",
+                "fatigue_cost": 8.0
+              }
+            ]
+          },
+          "friendly_end": {
+            "id": "friendly_end",
+            "lines": [{ "keys": ["dialogue.villagium.weather.happy_bye"] }],
+            "choices": []
+          },
+          "bad_end": {
+            "id": "bad_end",
+            "lines": [{ "keys": ["dialogue.villagium.weather.angry_bye"] }],
+            "choices": []
+          }
+        }
+      }
+    }, {
+      "id": "villagium:short_topic.joke",
+      "type": "villagium:conversation",
+      "display_key": "villagium.topic.joke",
+      "base_impact": 65,
+      "categories": [
+        "conversation_topic", "humor", "social", "light"
+      ],
+      "affinity_impact": {
+        "FRIENDSHIP": 1.3,
+        "TRUST": 1,
+        "RESPECT": -0.1
+      },
+      "conversation_config": {
+        "start_node": "intro",
+        "nodes": {
+          "intro": {
+            "id": "intro",
+            "lines": [
+              {
+                "keys": ["dialogue.villagium.joke.intro_angry"],
+                "conditions": { "mood": "angry" }
+              },
+              {
+                "keys": ["dialogue.villagium.joke.intro"]
+              }
+            ],
+            "choices": [
+              {
+                "text": "dialogue.villagium.choice.tell_joke",
+                "next_node": "joke_reaction",
+                "relationship_effects": { "FRIENDSHIP": 1.5 },
+                "fatigue_cost": 5.0,
+                "mood_modifiers": {
+                  "neutral": 10.0
+                }
+              },
+              {
+                "text": "dialogue.villagium.choice.ignore",
+                "next_node": "ignored_node",
+                "relationship_effects": { "FRIENDSHIP": -2.0, "RESPECT": -1.0 },
+                "force_mood": "angry",
+                "fatigue_cost": 2.0
+              }
+            ]
+          },
+          "joke_reaction": {
+            "id": "joke_reaction",
+            "lines": [
+              {
+                "keys": ["dialogue.villagium.joke.reaction_good"]
+              }
+            ],
+            "choices": []
+          },
+          "ignored_node": {
+            "id": "ignored_node",
+            "lines": [
+              {
+                "keys": ["dialogue.villagium.joke.reaction_angry"]
+              }
+            ],
+            "choices": []
+          }
+        }
+      }
+    }, {
+      "id": "villagium:short_topic.local_news",
+      "type": "villagium:conversation",
+      "display_key": "villagium.topic.local_news",
+      "icon": "minecraft:map",
+      "categories": [
+        "social"
+      ],
+      "base_impact": 55,
+      "affinity_impact": {
+        "TRUST": 1.0
+      },
+      "cancellation_effects": {
+        "relationship_effects": {
+          "FRIENDSHIP": -0.5
+        },
+        "fatigue_cost": 1.0
+      },
+      "conversation_config": {
+        "start_node": "intro",
+        "nodes": {
+          "intro": {
+            "id": "intro",
+            "lines": [
+              {
+                "keys": ["dialogue.villagium.local_news.intro"]
+              }
+            ],
+            "choices": [
+              {
+                "text": "dialogue.villagium.choice.ask_rumors",
+                "next_node": "rumors",
+                "relationship_effects": { "TRUST": 1.5 },
+                "fatigue_cost": 4.0
+              },
+              {
+                "text": "dialogue.villagium.choice.dismiss_news",
+                "next_node": "dismissed",
+                "relationship_effects": { "FRIENDSHIP": -1.0 },
+                "fatigue_cost": 2.0
+              }
+            ]
+          },
+          "rumors": {
+            "id": "rumors",
+            "lines": [{ "keys": ["dialogue.villagium.local_news.rumors_response"] }],
+            "choices": []
+          },
+          "dismissed": {
+            "id": "dismissed",
+            "lines": [{ "keys": ["dialogue.villagium.local_news.dismissed_response"] }],
+            "choices": []
+          }
+        }
+      }
+    }, {
+      "id": "villagium:short_topic.hobbies",
+      "type": "villagium:conversation",
+      "display_key": "villagium.topic.hobbies",
+      "icon": "minecraft:chest",
+      "categories": [
+        "personal"
+      ],
+      "base_impact": 60,
+      "affinity_impact": {
+        "FRIENDSHIP": 1.2
+      },
+      "cancellation_effects": {
+        "relationship_effects": {
+          "FRIENDSHIP": -1.0
+        },
+        "fatigue_cost": 1.5
+      },
+      "conversation_config": {
+        "start_node": "intro",
+        "nodes": {
+          "intro": {
+            "id": "intro",
+            "lines": [
+              {
+                "keys": ["dialogue.villagium.hobbies.studious_response"],
+                "conditions": { "trait": "villagium:studious" }
+              },
+              {
+                "keys": ["dialogue.villagium.hobbies.studious_response"],
+                "conditions": { "trait": "villagium:bookworm" }
+              },
+              {
+                "keys": ["dialogue.villagium.hobbies.generic_response"]
+              }
+            ],
+            "choices": [
+              {
+                "text": "dialogue.villagium.choice.talk_mining",
+                "next_node": "mining_response",
+                "relationship_effects": { "FRIENDSHIP": 1.0 },
+                "fatigue_cost": 3.0
+              },
+              {
+                "text": "dialogue.villagium.choice.ask_recommendation",
+                "next_node": "recommend_response",
+                "relationship_effects": { "TRUST": 1.5 },
+                "fatigue_cost": 4.0
+              }
+            ]
+          },
+          "mining_response": {
+            "id": "mining_response",
+            "lines": [{ "keys": ["dialogue.villagium.hobbies.mining_reaction"] }],
+            "choices": []
+          },
+          "recommend_response": {
+            "id": "recommend_response",
+            "lines": [{ "keys": ["dialogue.villagium.hobbies.recommend_reaction"] }],
+            "choices": []
+          }
+        }
+      }
+    }, {
+      "id": "villagium:short_topic.ask_how_feeling",
+      "type": "villagium:conversation",
+      "display_key": "villagium.topic.ask_how_feeling",
+      "icon": "minecraft:apple",
+      "categories": [
+        "personal"
+      ],
+      "base_impact": 50,
+      "affinity_impact": {
+        "FRIENDSHIP": 1.0
+      },
+      "cancellation_effects": {
+        "relationship_effects": {
+          "FRIENDSHIP": -0.5
+        },
+        "fatigue_cost": 1.0
+      },
+      "conversation_config": {
+        "start_node": "intro",
+        "nodes": {
+          "intro": {
+            "id": "intro",
+            "lines": [
+              {
+                "keys": ["dialogue.villagium.feelings.angry_response"],
+                "conditions": { "mood": "angry" }
+              },
+              {
+                "keys": ["dialogue.villagium.feelings.happy_response"],
+                "conditions": { "mood": "happy" }
+              },
+              {
+                "keys": ["dialogue.villagium.feelings.generic_response"]
+              }
+            ],
+            "choices": [
+              {
+                "text": "dialogue.villagium.choice.cheer_up",
+                "next_node": "cheered_up",
+                "relationship_effects": { "FRIENDSHIP": 2.0 },
+                "force_mood": "happy",
+                "fatigue_cost": 5.0
+              },
+              {
+                "text": "dialogue.villagium.choice.wish_good_day",
+                "next_node": "good_day_wished",
+                "relationship_effects": { "FRIENDSHIP": 1.0 },
+                "fatigue_cost": 2.0
+              }
+            ]
+          },
+          "cheered_up": {
+            "id": "cheered_up",
+            "lines": [{ "keys": ["dialogue.villagium.feelings.cheer_reaction"] }],
+            "choices": []
+          },
+          "good_day_wished": {
+            "id": "good_day_wished",
+            "lines": [{ "keys": ["dialogue.villagium.feelings.good_day_reaction"] }],
+            "choices": []
+          }
+        }
+      }
+    }, {
+      "id": "villagium:short_topic.food",
+      "type": "villagium:conversation",
+      "display_key": "villagium.topic.food",
+      "icon": "minecraft:cookie",
+      "categories": [
+        "personal", "light", "food"
+      ],
+      "base_impact": 60,
+      "affinity_impact": {
+        "FRIENDSHIP": 1.2
+      },
+      "cancellation_effects": {
+        "relationship_effects": {
+          "FRIENDSHIP": -0.5
+        },
+        "fatigue_cost": 1.0
+      },
+      "conversation_config": {
+        "start_node": "intro",
+        "nodes": {
+          "intro": {
+            "id": "intro",
+            "lines": [
+              {
+                "keys": ["dialogue.villagium.food.gentle_intro"],
+                "conditions": { "personality": "villagium:gentle" }
+              },
+              {
+                "keys": ["dialogue.villagium.food.gluttony_intro"],
+                "conditions": { "trait": "villagium:gluttony" }
+              },
+              {
+                "keys": ["dialogue.villagium.food.generic_intro"]
+              }
+            ],
+            "choices": [
+              {
+                "text": "dialogue.villagium.choice.sweets",
+                "next_node": "sweets_response",
+                "relationship_effects": { "FRIENDSHIP": 1.5 },
+                "fatigue_cost": 3.0
+              },
+              {
+                "text": "dialogue.villagium.choice.breakfast",
+                "next_node": "breakfast_response",
+                "relationship_effects": { "TRUST": 1.0 },
+                "fatigue_cost": 2.0
+              }
+            ]
+          },
+          "sweets_response": {
+            "id": "sweets_response",
+            "lines": [
+              {
+                "keys": ["dialogue.villagium.food.gentle_sweets"],
+                "conditions": { "personality": "villagium:gentle" }
+              },
+              {
+                "keys": ["dialogue.villagium.food.gluttony_sweets"],
+                "conditions": { "trait": "villagium:gluttony" }
+              },
+              {
+                "keys": ["dialogue.villagium.food.generic_sweets"]
+              }
+            ],
+            "choices": []
+          },
+          "breakfast_response": {
+            "id": "breakfast_response",
+            "lines": [
+              {
+                "keys": ["dialogue.villagium.food.gentle_breakfast"],
+                "conditions": { "personality": "villagium:gentle" }
+              },
+              {
+                "keys": ["dialogue.villagium.food.generic_breakfast"]
+              }
+            ],
+            "choices": []
+          }
+        }
+      }
+    }
+  ]
+}

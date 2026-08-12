@@ -1,0 +1,36 @@
+{
+  "id": "villagium:gluttony",
+  "display_key": "trait.villagium.gluttony.name",
+  "description_key": "trait.villagium.gluttony.description",
+  "modifiers": [
+    {
+      "type": "villagium:reception_score",
+      "category_scores": {
+        "food": 15,
+        "health": -10,
+        "social": -5
+      }
+    },
+    {
+      "type": "villagium:hunger_modifier",
+      "hungerThresholdMultiplier": 1.25,
+      "saturationBonusMultiplier": 0.75
+    },
+    {
+      "type": "villagium:preferred_food",
+      "preference": "HIGHEST_NUTRITION"
+    },
+    {
+      "type": "villagium:add_behavior",
+      "behavior": "villagium:overeater",
+      "activity": "idle",
+      "priority": 60,
+      "data": {
+        "base_chance": 0.01,
+        "appetizing_food_bonus": 2.0,
+        "pickup_radius": 12,
+        "appetizing_nutrition_threshold": 6
+      }
+    }
+  ]
+}

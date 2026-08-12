@@ -1,0 +1,17 @@
+{
+  "personality": "villagium:generic",
+  "entries": [
+    {
+      "id": "generic_dialogue",
+      "type": "generic",
+      "keys": [
+        "dialogue.generic.1",
+        "dialogue.generic.2",
+        "dialogue.generic.3",
+        "dialogue.generic.4",
+        "dialogue.generic.5"
+      ],
+      "weight": 1
+    }
+  ]
+}

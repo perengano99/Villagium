@@ -1,0 +1,31 @@
+{
+  "personality": "villagium:gentle",
+  "entries": [
+    {
+      "id": "gentle_weather_clear",
+      "type": "short_topic",
+      "event": "villagium:short_topic.weather",
+      "conditions": {
+        "weather": "CLEAR"
+      },
+      "keys": [
+        "dialogue.villagium.gentle.weather.clear1",
+        "dialogue.villagium.gentle.weather.clear2"
+      ],
+      "weight": 10
+    },
+    {
+      "id": "gentle_weather_neutral",
+      "type": "short_topic",
+      "event": "villagium:short_topic.weather",
+      "conditions": {
+        "weather": "RAIN"
+      },
+      "keys": [
+        "dialogue.villagium.gentle.weather.rainy1",
+        "dialogue.villagium.gentle.weather.rainy2"
+      ],
+      "weight": 10
+    }
+  ]
+}

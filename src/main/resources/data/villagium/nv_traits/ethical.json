@@ -1,0 +1,20 @@
+{
+  "id": "villagium:ethical",
+  "display_key": "trait.villagium.ethical.name",
+  "description_key": "trait.villagium.ethical.desc",
+  "modifiers": [
+    {
+      "type": "villagium:reception_score",
+      "category_scores": {
+        "ofensivo": -40,
+        "engaño": -50,
+        "positivo": 10
+      }
+    }, {
+      "type": "villagium:add_behavior",
+      "behavior": "villagium:pedo",
+      "priority": 1,
+      "activity": "idle"
+    }
+  ]
+}

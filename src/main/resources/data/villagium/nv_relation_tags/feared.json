@@ -1,0 +1,12 @@
+{
+  "id": "villagium:feared",
+  "priority": 60,
+  "base_weight": 60,
+  "reception_modifier": -10,
+  "conditions": {
+    "fear": { "min": 50.0 }
+  },
+  "required_known": true,
+  "display_key": "relation_tag.villagium.feared",
+  "display_color": "#555555"
+}
